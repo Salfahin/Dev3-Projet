@@ -4,11 +4,11 @@
 
 To start with, you need to have node.js installed on your system. Refer to the instructions on this page to do this: [Node.js - Download Node.js®](https://nodejs.org/en/download). Make sure that the application uses :
 
-- Version 22.17.0 LTS ;
+1. Version 22.17.0 LTS ;
 
-- nvm ;
+2. nvm ;
 
-- pnpm.
+3. pnpm.
 
 <img width="829" height="627" alt="image" src="https://github.com/user-attachments/assets/c88cbb70-f7fd-4743-b8d0-cbe346ce1173" />
 
