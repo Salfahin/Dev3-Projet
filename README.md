@@ -1,21 +1,45 @@
-# Dev-Web-2024-2025
-Template de repo pour le projet Dev Web 2024-2025
+# How to launch the project
 
-## Comment copier ce Wiki? 
+## Building the Next.js application
 
-Pour récupérer le template et l'utiliser dans le cadre de votre projet, vous allez devoir faire un "fork" de ce repo.  Cependant, le wiki n'est pas copié automatiquement.  Suivez donc la procédure ci-dessous : 
+To start with, you need to have node.js installed on your system. Refer to the instructions on this page to do this: [Node.js - Download Node.js®](https://nodejs.org/en/download). Make sure that the application uses :
 
-1.  Créez un fork de ce repository.  Ce sera votre repo de projet, avec une URL de type `https://github.com/<username>/<repo-name>`.  
-2.  Créez un wiki dans ce nouveau repo, avec une Home page vide par exemple. 
-3.  Clonez le repo git du wiki original sur votre machine :  `git clone https://github.com/EphecLLN/Dev-Web-2024.wiki.git`
-4.  Pour "pousser" le wiki présent sur votre machine vers votre repository de projet, vous allez changer le pointeur "remote" de votre copie locale : 
-    `git remote add fork https://github.com/<username>/<repo-name>.wiki.git`
-6.  Forcez à présent la copie du wiki sur votre machine vers votre repository de projet.  Cela écrasera le wiki vide que vous aviez créé plus tôt avec le template :   `git push -f fork master`
+- Version 22.17.0 LTS ;
 
-## Utilisation
+- nvm ;
 
+- pnpm.
 
+<img width="829" height="627" alt="image" src="https://github.com/user-attachments/assets/c88cbb70-f7fd-4743-b8d0-cbe346ce1173" />
 
-Il vous est demandé de respecter la table des matières du projet, afin que les enseignants puissent facilement retrouver les informations qu'ils cherchent.  Si vous souhaitez effectuer un changement dans sa structure, parlez-en d'abord avec votre coach.  
+Then refer to the following instructions to launch the application: [Getting Started: Installation | Next.js](https://nextjs.org/docs/app/getting-started/installation). At the `npx create-next-app@latest` step, choose these options:
 
-Si vous trouvez que les pages sont trop longues, vous pouvez en créer de nouvelles, mais vous devez alors vous assurez que les liens sont mis à jour dans la table des matières.  
+<img width="624" height="142" alt="image" src="https://github.com/user-attachments/assets/207016e9-6948-4eec-875d-7ddad36621c6" />
+
+If all goes well, a directory with the following structure should have been created:
+
+```shell
+projet_dev3_aout/  
+├── next.config.ts  
+├── next-env.d.ts  
+├── node_modules  
+├── package.json  
+├── package-lock.json  
+├── postcss.config.mjs  
+├── public  
+├── README.md  
+├── src  
+└── tsconfig.json
+```
+
+## Starting the development server
+
+Make sure that your terminal is in the directory bearing the project name. Run the `pnpm install` command to install all the dependencies listed in `package.json`.
+
+Once the download is complete, simply type the command `pnpm run dev` to launch the server.
+
+<img width="626" height="192" alt="image" src="https://github.com/user-attachments/assets/372fef31-fb58-4c95-833f-dc72b605c369" />
+
+Normally, visiting one of the addresses listed (Local or Network) will take you to this page:
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/058cdb02-53c0-42c9-9384-53acd4555e85" />
