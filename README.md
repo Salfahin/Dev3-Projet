@@ -10,6 +10,8 @@ To start with, you need to have node.js installed on your system. Refer to the i
 
 3. pnpm.
 
+(Note: This may slighly vary on Windows but as long as you use 22.17.0 LTS and pnpm, it should be good.)
+
 <img width="829" height="627" alt="image" src="https://github.com/user-attachments/assets/c88cbb70-f7fd-4743-b8d0-cbe346ce1173" />
 
 Then refer to the following instructions to launch the application: [Getting Started: Installation | Next.js](https://nextjs.org/docs/app/getting-started/installation). At the `npx create-next-app@latest` step, choose these options:
