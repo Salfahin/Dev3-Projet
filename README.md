@@ -47,3 +47,5 @@ Une fois le téléchargement effectué, simplement taper la commande `pnpm run d
 Normalement, visiter l'une des adresses listées (Local ou Network) mènera à cette page-ci :
 
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/058cdb02-53c0-42c9-9384-53acd4555e85" />
+
+Pour stopper le serveur, un Ctrl+C fera l'affaire et pour ensuite le relancer à l'avenir, il suffira de retaper la commande `pnpm run dev`.
