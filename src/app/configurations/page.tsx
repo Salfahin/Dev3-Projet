@@ -1,3 +1,5 @@
+// the page to buy pre-built configs.
+
 'use client'
 
 import { useEffect, useState } from 'react'
