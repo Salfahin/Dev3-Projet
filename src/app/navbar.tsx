@@ -9,9 +9,17 @@ const NavigationBar = () => {
   const pathname = usePathname();
 
   const navigationItems = [
-    { href: '/composants/cpu', label: 'CPU' },
-    { href: '/composants/motherboard', label: 'Motherboard' },
-    { href: '/composants/power_supplies', label: 'Power Supplies' },
+    { href: '/configurations', label: 'Pre-builts' },
+    { href: '/parts/processors', label: 'Processors' },
+    { href: '/parts/cpu_coolers', label: 'CPU Cooler' },
+    { href: '/parts/motherboards', label: 'Motherboards' },
+    { href: '/parts/memory', label: 'Memory' },
+    { href: '/parts/disks', label: 'Disks' },
+    { href: '/parts/video_cards', label: 'Video Cards' },
+    { href: '/parts/cases', label: 'Cases' },
+    { href: '/parts/case_fans', label: 'Case Fans' },
+    { href: '/parts/power_supplies', label: 'Power Supplies' },
+    { href: '/parts/other', label: 'other' },
   ];
 
   return (
