@@ -1,0 +1,145 @@
+// This is the home page on which the client will land when entering the URL to the website.
+// It contains sections that grab the latest parts and products of their category then display them.
+
+import {
+  BsCpu,
+  BsFan,
+  BsGpuCard,
+  BsHdd,
+  BsPc,
+  BsPcDisplay,
+  BsMemory,
+  BsMotherboard,
+  BsPower,
+  BsSnow,
+} from "react-icons/bs";
+import {
+  HomeProcessorsSection,
+  HomeCoolersSection,
+  HomeMotherboardsSection,
+  HomeMemorySection,
+  HomeDisksSection,
+  HomeVideoCardsSection,
+  HomeCasesSection,
+  HomeCaseFansSection,
+  HomePowerSuppliesSection,
+  HomeOthersSection,
+  HomeConfigsSection,
+} from "@/components/home_page/HomeSections";
+import Link from "next/link";
+
+export default function Home() {
+  return (
+    <div>
+      {/* Pre-builts section */}
+      <div>
+        <h1 className="flex items-center gap-2 text-xl font-semibold">
+          <BsPcDisplay />
+          Pre-builts
+        </h1>
+        Not working yet.
+        <hr className="my-2" />
+        {/* <HomeConfigsSection />*/}
+      </div>
+
+      {/* Processors section */}
+      <div>
+        <h1 className="flex items-center gap-2 text-xl font-semibold">
+          <BsCpu />
+          Processors
+        </h1>
+        <hr className="my-2" />
+        <HomeProcessorsSection />
+      </div>
+
+      {/* Coolers section */}
+      <div>
+        <h1 className="flex items-center gap-2 text-xl font-semibold">
+          <BsSnow />
+          Coolers
+        </h1>
+        <hr className="my-2" />
+        <HomeCoolersSection />
+      </div>
+
+      {/* Motherboards section */}
+      <div>
+        <h1 className="flex items-center gap-2 text-xl font-semibold">
+          <BsMotherboard />
+          Motherboards
+        </h1>
+        <hr className="my-2" />
+        <HomeMotherboardsSection />
+      </div>
+
+      {/* Memory section */}
+      <div>
+        <h1 className="flex items-center gap-2 text-xl font-semibold">
+          <BsMemory />
+          Memory
+        </h1>
+        <hr className="my-2" />
+        <HomeMemorySection />
+      </div>
+
+      {/* Disks section */}
+      <div>
+        <h1 className="flex items-center gap-2 text-xl font-semibold">
+          <BsHdd />
+          Disks
+        </h1>
+        <hr className="my-2" />
+        <HomeDisksSection />
+      </div>
+
+      {/* Video Cards section */}
+      <div>
+        <h1 className="flex items-center gap-2 text-xl font-semibold">
+          <BsGpuCard />
+          Video Cards
+        </h1>
+        <hr className="my-2" />
+        <HomeVideoCardsSection />
+      </div>
+
+      {/* Cases section */}
+      <div>
+        <h1 className="flex items-center gap-2 text-xl font-semibold">
+          <BsPc />
+          Cases
+        </h1>
+        <hr className="my-2" />
+        <HomeCasesSection />
+      </div>
+
+      {/* Case Fans section */}
+      <div>
+        <h1 className="flex items-center gap-2 text-xl font-semibold">
+          <BsFan />
+          Case Fans
+        </h1>
+        <hr className="my-2" />
+        <HomeCaseFansSection />
+      </div>
+
+      {/* Power Supplies section */}
+      <div>
+        <h1 className="flex items-center gap-2 text-xl font-semibold">
+          <BsPower />
+          Power Supplies
+        </h1>
+        <hr className="my-2" />
+        <HomePowerSuppliesSection />
+      </div>
+
+      {/* Others section */}
+      <div>
+        <h1 className="flex items-center gap-2 text-xl font-semibold">
+          others
+        </h1>
+        <hr className="my-2" />
+        <HomeOthersSection />
+      </div>
+    </div>
+  );
+}
