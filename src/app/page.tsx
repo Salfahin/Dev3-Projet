@@ -1,4 +1,5 @@
 // This is the home page on which the client will land when entering the URL to the website.
+// It contains sections that grab the latest parts and products of their category then display them.
 
 import {
   BsCpu,
@@ -12,6 +13,19 @@ import {
   BsPower,
   BsSnow,
 } from "react-icons/bs";
+import {
+  HomeProcessorsSection,
+  HomeCoolersSection,
+  HomeMotherboardsSection,
+  HomeMemorySection,
+  HomeDisksSection,
+  HomeVideoCardsSection,
+  HomeCasesSection,
+  HomeCaseFansSection,
+  HomePowerSuppliesSection,
+  HomeOthersSection,
+  HomeConfigsSection,
+} from "@/components/home_page/HomeSections";
 
 export default function Home() {
   return (
@@ -23,6 +37,7 @@ export default function Home() {
           Pre-builts
         </h1>
         <hr />
+        <HomeConfigsSection />
       </div>
 
       {/* Processors section */}
@@ -32,6 +47,7 @@ export default function Home() {
           Processors
         </h1>
         <hr />
+        <HomeProcessorsSection />
       </div>
 
       {/* Coolers section */}
@@ -41,6 +57,7 @@ export default function Home() {
           Coolers
         </h1>
         <hr />
+        <HomeCoolersSection />
       </div>
 
       {/* Motherboards section */}
@@ -50,6 +67,7 @@ export default function Home() {
           Motherboards
         </h1>
         <hr />
+        <HomeMotherboardsSection />
       </div>
 
       {/* Memory section */}
@@ -59,6 +77,7 @@ export default function Home() {
           Memory
         </h1>
         <hr />
+        <HomeMemorySection />
       </div>
 
       {/* Disks section */}
@@ -68,6 +87,7 @@ export default function Home() {
           Disks
         </h1>
         <hr />
+        <HomeDisksSection />
       </div>
 
       {/* Video Cards section */}
@@ -77,6 +97,7 @@ export default function Home() {
           Video Cards
         </h1>
         <hr />
+        <HomeVideoCardsSection />
       </div>
 
       {/* Cases section */}
@@ -86,6 +107,7 @@ export default function Home() {
           Cases
         </h1>
         <hr />
+        <HomeCasesSection />
       </div>
 
       {/* Case Fans section */}
@@ -95,6 +117,7 @@ export default function Home() {
           Case Fans
         </h1>
         <hr />
+        <HomeCaseFansSection />
       </div>
 
       {/* Power Supplies section */}
@@ -104,6 +127,7 @@ export default function Home() {
           Power Supplies
         </h1>
         <hr />
+        <HomePowerSuppliesSection />
       </div>
 
       {/* Others section */}
@@ -112,6 +136,7 @@ export default function Home() {
           others
         </h1>
         <hr />
+        <HomeOthersSection />
       </div>
     </div>
   );

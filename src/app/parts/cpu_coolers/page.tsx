@@ -3,7 +3,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import { fetchParts } from "@/lib/fetchParts";
-import PartGrid from "@/components/PartGrid";
+import PartGrid from "@/components/parts_pages/PartGrid";
 import { Part } from "@/types/Parts";
 import { BsSnow } from "react-icons/bs";
 
