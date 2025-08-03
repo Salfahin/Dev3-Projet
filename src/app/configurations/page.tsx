@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from 'react'
 import supabase from '@/lib/supabaseClient'
+import { BsPcDisplay } from "react-icons/bs";
 
 type Configuration = {
     config_id: number
@@ -132,7 +133,10 @@ export default function ConfigurationsPage() {
 
     return (
         <div className="p-6">
-            <h1 className="text-2xl font-bold mb-6">Configurations Préfaites</h1>
+            <h1 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <BsPcDisplay />
+                Pre-built PCs
+            </h1>
             <div className="flex gap-4">
             {/* Configurations */}
                 <div className="w-1/3 border p-4 rounded-lg">

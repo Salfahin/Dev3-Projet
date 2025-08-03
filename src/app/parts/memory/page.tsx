@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { fetchParts } from "@/lib/fetchParts";
 import PartGrid from "@/components/PartGrid";
 import { Part } from "@/types/Parts";
+import { BsMemory } from "react-icons/bs";
 
 export default function MemoryPage() {
   const [parts, setParts] = useState<Part[]>([]);
@@ -19,7 +20,10 @@ export default function MemoryPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Memory</h1>
+      <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
+        <BsMemory />
+        Memory
+      </h1>
       {loading ? <p className="text-gray-500">Fetching memory modules…</p> : <PartGrid parts={parts} />}
     </div>
   );
