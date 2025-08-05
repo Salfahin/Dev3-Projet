@@ -9,6 +9,11 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+Server/node_modules/
+Server/package-lock.json
+Client/node_modules/
+client/package-lock.json
+
 
 # testing
 /coverage
