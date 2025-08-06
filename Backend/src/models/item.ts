@@ -1,1 +1,0 @@
-// Defines the structure of an Item, possibly with validation or decorators.
