@@ -1,0 +1,15 @@
+meta {
+  name: FetchCPUCoolers
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:3000/parts/cpu_coolers
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,7 +1,7 @@
-//This is a processors what it is and its characteristics.
+//This is a generic part what it is and its characteristics.
 
-export interface Processor {
-  part_id: number,
+export interface Part {
+  part_id: number;
   part_type: number;
   part_name: string;
   part_manufacturer: string;

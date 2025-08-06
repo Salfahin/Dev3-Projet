@@ -1,0 +1,15 @@
+meta {
+  name: FetchOthers
+  type: http
+  seq: 10
+}
+
+get {
+  url: http://localhost:3000/parts/others
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
