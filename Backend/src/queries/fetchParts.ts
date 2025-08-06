@@ -1,5 +1,6 @@
 // This is the generic query used by the pages to buy parts.
 // They inject their custom requirements into it.
+// This does not work with the others page as they do not have entries into the parts_specifications table.
 
 import { Part } from "../types/part";
 import { supabase } from "../lib/supabaseClient";

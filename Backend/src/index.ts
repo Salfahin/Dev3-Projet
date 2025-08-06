@@ -15,8 +15,8 @@ import {
   FetchCases,
   FetchCaseFans,
   FetchPowerSupplies,
-  FetchOthers,
 } from './services/partsFetchers';
+import { FetchOthers } from './queries/fetchOthers';
 
 const app = express();
 const PORT = process.env.PORT || 3000;

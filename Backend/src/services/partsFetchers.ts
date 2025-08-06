@@ -21,35 +21,30 @@ export async function FetchMotherboards(): Promise<Part[]> {
 
 // The function used to fetch the memory.
 export async function FetchMemory(): Promise<Part[]> {
-  return FetchParts(5, ['Form Factor', 'Socket / CPU']);
+  return FetchParts(5, ['ECC / Registered', 'Form Factor', 'Modules', 'Speed']);
 }
 
 // The function used to fetch the disks.
 export async function FetchDisks(): Promise<Part[]> {
-  return FetchParts(6, ['Form Factor', 'Socket / CPU']);
+  return FetchParts(6, ['Capacity', 'Form Factor', 'Type', 'Interface', 'NVME']);
 }
 
 // The function used to fetch the video cards.
 export async function FetchVideoCards(): Promise<Part[]> {
-  return FetchParts(2, ['Form Factor', 'Socket / CPU']);
+  return FetchParts(2, ['Chipset', 'Memory']);
 }
 
 // The function used to fetch the cases.
 export async function FetchCases(): Promise<Part[]> {
-  return FetchParts(7, ['Form Factor', 'Socket / CPU']);
+  return FetchParts(7, ['Motherboard Form Factor', 'Dimensions']);
 }
 
 // The function used to fetch the case fans.
 export async function FetchCaseFans(): Promise<Part[]> {
-  return FetchParts(8, ['Form Factor', 'Socket / CPU']);
+  return FetchParts(8, ['Size']);
 }
 
 // The function used to fetch the power supplies.
 export async function FetchPowerSupplies(): Promise<Part[]> {
-  return FetchParts(3, ['Form Factor', 'Socket / CPU']);
-}
-
-// The function used to fetch the others.
-export async function FetchOthers(): Promise<Part[]> {
-  return FetchParts(9, ['Form Factor', 'Socket / CPU']);
+  return FetchParts(3, ['Efficiency Rating', 'Type', 'Wattage']);
 }
