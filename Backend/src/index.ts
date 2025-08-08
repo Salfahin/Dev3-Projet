@@ -31,7 +31,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 //Processors page.
-app.get('/parts/processors', async (req: Request, res: Response) => {
+app.get('/api/parts/processors', async (req: Request, res: Response) => {
   try {
     const processors: Part[] = await FetchProcessors();
     res.json(processors);
@@ -42,7 +42,7 @@ app.get('/parts/processors', async (req: Request, res: Response) => {
 });
 
 //CPU Coolers page.
-app.get('/parts/cpu_coolers', async (req: Request, res: Response) => {
+app.get('/api/parts/cpu_coolers', async (req: Request, res: Response) => {
   try {
     const cpuCoolers: Part[] = await FetchCPUCoolers();
     res.json(cpuCoolers);
@@ -53,7 +53,7 @@ app.get('/parts/cpu_coolers', async (req: Request, res: Response) => {
 });
 
 //Motherboards page
-app.get('/parts/motherboards', async (req: Request, res: Response) => {
+app.get('/api/parts/motherboards', async (req: Request, res: Response) => {
   try {
     const motherboards: Part[] = await FetchMotherboards();
     res.json(motherboards);
@@ -65,7 +65,7 @@ app.get('/parts/motherboards', async (req: Request, res: Response) => {
 
 
 //Memory page
-app.get('/parts/memory', async (req: Request, res: Response) => {
+app.get('/api/parts/memory', async (req: Request, res: Response) => {
   try {
     const memory: Part[] = await FetchMemory();
     res.json(memory);
@@ -76,7 +76,7 @@ app.get('/parts/memory', async (req: Request, res: Response) => {
 });
 
 //Disks page
-app.get('/parts/disks', async (req: Request, res: Response) => {
+app.get('/api/parts/disks', async (req: Request, res: Response) => {
   try {
     const disks: Part[] = await FetchDisks();
     res.json(disks);
@@ -87,7 +87,7 @@ app.get('/parts/disks', async (req: Request, res: Response) => {
 });
 
 //Video cards page
-app.get('/parts/video_cards', async (req: Request, res: Response) => {
+app.get('/api/parts/video_cards', async (req: Request, res: Response) => {
   try {
     const videoCards: Part[] = await FetchVideoCards();
     res.json(videoCards);
@@ -98,7 +98,7 @@ app.get('/parts/video_cards', async (req: Request, res: Response) => {
 });
 
 //Cases page
-app.get('/parts/cases', async (req: Request, res: Response) => {
+app.get('/api/parts/cases', async (req: Request, res: Response) => {
   try {
     const cases: Part[] = await FetchCases();
     res.json(cases);
@@ -109,7 +109,7 @@ app.get('/parts/cases', async (req: Request, res: Response) => {
 });
 
 //Case fans page
-app.get('/parts/case_fans', async (req: Request, res: Response) => {
+app.get('/api/parts/case_fans', async (req: Request, res: Response) => {
   try {
     const caseFans: Part[] = await FetchCaseFans();
     res.json(caseFans);
@@ -120,7 +120,7 @@ app.get('/parts/case_fans', async (req: Request, res: Response) => {
 });
 
 //Power supplies page
-app.get('/parts/power_supplies', async (req: Request, res: Response) => {
+app.get('/api/parts/power_supplies', async (req: Request, res: Response) => {
   try {
     const powerSupplies: Part[] = await FetchPowerSupplies();
     res.json(powerSupplies);
@@ -131,7 +131,7 @@ app.get('/parts/power_supplies', async (req: Request, res: Response) => {
 });
 
 //Others page
-app.get('/parts/others', async (req: Request, res: Response) => {
+app.get('/api/parts/others', async (req: Request, res: Response) => {
   try {
     const others: Part[] = await FetchOthers();
     res.json(others);
