@@ -5,18 +5,7 @@ dotenv.config();
 
 import express, { Request, Response } from 'express';
 import { Part } from './types/part';
-import {
-  FetchProcessors,
-  FetchCPUCoolers,
-  FetchMotherboards,
-  FetchMemory,
-  FetchDisks,
-  FetchVideoCards,
-  FetchCases,
-  FetchCaseFans,
-  FetchPowerSupplies,
-} from './services/partsFetchers';
-import { FetchOthers } from './queries/fetchOthers';
+import { FetchParts } from './queries/fetchParts';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,7 +22,7 @@ app.get('/', (req: Request, res: Response) => {
 //Processors page.
 app.get('/api/parts/processors', async (req: Request, res: Response) => {
   try {
-    const processors: Part[] = await FetchProcessors();
+    const processors: Part[] = await FetchParts(0);
     res.json(processors);
   } catch (error) {
     console.error('Failed to fetch processors:', error);
@@ -44,7 +33,7 @@ app.get('/api/parts/processors', async (req: Request, res: Response) => {
 //CPU Coolers page.
 app.get('/api/parts/cpu_coolers', async (req: Request, res: Response) => {
   try {
-    const cpuCoolers: Part[] = await FetchCPUCoolers();
+    const cpuCoolers: Part[] = await FetchParts(1);
     res.json(cpuCoolers);
   } catch (error) {
     console.error('Failed to fetch CPU coolers:', error);
@@ -55,7 +44,7 @@ app.get('/api/parts/cpu_coolers', async (req: Request, res: Response) => {
 //Motherboards page
 app.get('/api/parts/motherboards', async (req: Request, res: Response) => {
   try {
-    const motherboards: Part[] = await FetchMotherboards();
+    const motherboards: Part[] = await FetchParts(4);
     res.json(motherboards);
   } catch (error) {
     console.error('Failed to fetch motherboards:', error);
@@ -67,7 +56,7 @@ app.get('/api/parts/motherboards', async (req: Request, res: Response) => {
 //Memory page
 app.get('/api/parts/memory', async (req: Request, res: Response) => {
   try {
-    const memory: Part[] = await FetchMemory();
+    const memory: Part[] = await FetchParts(5);
     res.json(memory);
   } catch (error) {
     console.error('Failed to fetch memory:', error);
@@ -78,7 +67,7 @@ app.get('/api/parts/memory', async (req: Request, res: Response) => {
 //Disks page
 app.get('/api/parts/disks', async (req: Request, res: Response) => {
   try {
-    const disks: Part[] = await FetchDisks();
+    const disks: Part[] = await FetchParts(6);
     res.json(disks);
   } catch (error) {
     console.error('Failed to fetch disks:', error);
@@ -89,7 +78,7 @@ app.get('/api/parts/disks', async (req: Request, res: Response) => {
 //Video cards page
 app.get('/api/parts/video_cards', async (req: Request, res: Response) => {
   try {
-    const videoCards: Part[] = await FetchVideoCards();
+    const videoCards: Part[] = await FetchParts(2);
     res.json(videoCards);
   } catch (error) {
     console.error('Failed to fetch video cards:', error);
@@ -100,7 +89,7 @@ app.get('/api/parts/video_cards', async (req: Request, res: Response) => {
 //Cases page
 app.get('/api/parts/cases', async (req: Request, res: Response) => {
   try {
-    const cases: Part[] = await FetchCases();
+    const cases: Part[] = await FetchParts(7);
     res.json(cases);
   } catch (error) {
     console.error('Failed to fetch cases:', error);
@@ -111,7 +100,7 @@ app.get('/api/parts/cases', async (req: Request, res: Response) => {
 //Case fans page
 app.get('/api/parts/case_fans', async (req: Request, res: Response) => {
   try {
-    const caseFans: Part[] = await FetchCaseFans();
+    const caseFans: Part[] = await FetchParts(8);
     res.json(caseFans);
   } catch (error) {
     console.error('Failed to fetch case fans:', error);
@@ -122,7 +111,7 @@ app.get('/api/parts/case_fans', async (req: Request, res: Response) => {
 //Power supplies page
 app.get('/api/parts/power_supplies', async (req: Request, res: Response) => {
   try {
-    const powerSupplies: Part[] = await FetchPowerSupplies();
+    const powerSupplies: Part[] = await FetchParts(3);
     res.json(powerSupplies);
   } catch (error) {
     console.error('Failed to fetch power supplies:', error);
@@ -133,7 +122,7 @@ app.get('/api/parts/power_supplies', async (req: Request, res: Response) => {
 //Others page
 app.get('/api/parts/others', async (req: Request, res: Response) => {
   try {
-    const others: Part[] = await FetchOthers();
+    const others: Part[] = await FetchParts(9);
     res.json(others);
   } catch (error) {
     console.error('Failed to fetch others:', error);
