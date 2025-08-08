@@ -8,7 +8,10 @@ import { Part } from './types/part';
 import { FetchParts } from './queries/fetchParts';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
+const cors = require('cors');
+app.use(cors());
+
 
 // Middleware to parse JSON
 app.use(express.json());
