@@ -1,12 +1,13 @@
 // This component is used by the section "Pre-builts" on the home page.
 // It displays the five latest configurations present in the database as a chain of blocks.
 // This does not work for parts as they are of a different type (Part[] and not Configuration[]).
-// Only the section "Pre-builts" uses this componenent.
+// Only the section "Pre-builts" uses this component.
 
-import { Configuration } from "@/types/Configurations";
-
-export default function LatestConfigurationsGrid({ configs }: { configs: Configuration[] }) {
-  if (configs.length === 0) {
+/**
+ * @param {{ configs: Array<{ config_id: number, config_name: string }> }} props
+ */
+export default function LatestConfigurationsGrid({ configs }) {
+  if (!configs || configs.length === 0) {
     return <p className="text-gray-500 text-sm">Aucune configuration trouvée.</p>;
   }
 

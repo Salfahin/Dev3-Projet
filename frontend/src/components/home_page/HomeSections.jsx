@@ -1,21 +1,12 @@
-// This component represent the "Pre-builts" section in the home page.
-
 'use client'
 import { useEffect, useState } from "react";
 import { fetchParts } from "@/lib/fetchParts";
-import { Part } from "@/types/Parts";
 import LatestPartsGrid from "./LatestPartsGrid";
 import LatestConfigurationsGrid from "./LatestConfigurationsGrid";
 
 // The Pre-builts section
 export function HomeConfigsSection() {
-
-  type Configuration = {
-    config_id: number
-    config_name: string
-  }
-
-  const [configurations, setConfigurations] = useState<Configuration[]>([])
+  const [configurations, setConfigurations] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,7 +25,7 @@ export function HomeConfigsSection() {
 
 // The Processors section
 export function HomeProcessorsSection() {
-  const [parts, setParts] = useState<Part[]>([]);
+  const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -53,7 +44,7 @@ export function HomeProcessorsSection() {
 
 // The Coolers section
 export function HomeCoolersSection() {
-  const [parts, setParts] = useState<Part[]>([]);
+  const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -72,7 +63,7 @@ export function HomeCoolersSection() {
 
 // The Motherboards section
 export function HomeMotherboardsSection() {
-  const [parts, setParts] = useState<Part[]>([]);
+  const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -89,9 +80,9 @@ export function HomeMotherboardsSection() {
   );
 }
 
-// The Memory SECTION
+// The Memory section
 export function HomeMemorySection() {
-  const [parts, setParts] = useState<Part[]>([]);
+  const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -110,7 +101,7 @@ export function HomeMemorySection() {
 
 // The Disks section
 export function HomeDisksSection() {
-  const [parts, setParts] = useState<Part[]>([]);
+  const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -129,7 +120,7 @@ export function HomeDisksSection() {
 
 // The Video Cards section
 export function HomeVideoCardsSection() {
-  const [parts, setParts] = useState<Part[]>([]);
+  const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -148,7 +139,7 @@ export function HomeVideoCardsSection() {
 
 // The Cases section
 export function HomeCasesSection() {
-  const [parts, setParts] = useState<Part[]>([]);
+  const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -167,7 +158,7 @@ export function HomeCasesSection() {
 
 // The Case Fans section
 export function HomeCaseFansSection() {
-  const [parts, setParts] = useState<Part[]>([]);
+  const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -186,7 +177,7 @@ export function HomeCaseFansSection() {
 
 // The Power Supplies section
 export function HomePowerSuppliesSection() {
-  const [parts, setParts] = useState<Part[]>([]);
+  const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -205,7 +196,7 @@ export function HomePowerSuppliesSection() {
 
 // The Others section
 export function HomeOthersSection() {
-  const [parts, setParts] = useState<Part[]>([]);
+  const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
