@@ -5,7 +5,9 @@ dotenv.config();
 
 import express, { Request, Response } from 'express';
 import { Part } from './types/part';
+import { Configuration } from './types/configuration';
 import { FetchParts } from './queries/fetchParts';
+import { FetchConfigs } from './queries/fetchConfigs';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -20,6 +22,17 @@ app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, Express with TypeScript!');
+});
+
+//Configurations page.
+app.get('/api/configurations', async (req: Request, res: Response) => {
+  try {
+    const configurations: Configuration[] = await FetchConfigs();
+    res.json(configurations);
+  } catch (error) {
+    console.error('Failed to fetch configurations:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  };
 });
 
 //Processors page.
