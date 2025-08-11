@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Import de toutes les pages
 import HomePage from './pages/HomePage';
@@ -14,26 +14,12 @@ import MotherboardPage from './pages/Motherboard';
 import OthersPage from './pages/Others';
 import PowerSuppliesPage from './pages/PowerSupplies';
 import VideoCardsPage from './pages/VideoCards';
+import NavigationBar from './components/Navbar';
 
 function App() {
   return (
     <Router>
-      <nav style={{ padding: '1rem', borderBottom: '1px solid #ccc' }}>
-        <Link to="/">Accueil</Link> |
-        <Link to="/processors">Processors</Link> |
-        <Link to="/case-fans">Case Fans</Link> |
-        <Link to="/cases">Cases</Link> |
-        <Link to="/coolers">CPU Coolers</Link> |
-        <Link to="/disks">Disks</Link> |
-        <Link to="/memory">Memory</Link> |
-        <Link to="/motherboards">Motherboards</Link> |
-        <Link to="/others">Others</Link> |
-        <Link to="/power-supplies">Power Supplies</Link> |
-        <Link to="/video-cards">Video Cards</Link> |
-        <Link to="/config">Configurations</Link> |
-        <Link to="/about">À propos</Link>
-      </nav>
-
+      <NavigationBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
