@@ -18,6 +18,7 @@ const NavigationBar = () => {
     { href: '/case-fans', label: 'Case Fans' },
     { href: '/power-supplies', label: 'Power Supplies' },
     { href: '/others', label: 'Other' },
+    {href :'/basket' , label : 'Basket'},
     { href: '/about', label: 'About' },
   ];
 

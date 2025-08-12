@@ -15,6 +15,8 @@ import OthersPage from './pages/Others';
 import PowerSuppliesPage from './pages/PowerSupplies';
 import VideoCardsPage from './pages/VideoCards';
 import NavigationBar from './components/Navbar';
+import PanierPage from './pages/basket';
+import CheckoutPage from './pages/Checkout';
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
         <Route path="/power-supplies" element={<PowerSuppliesPage />} />
         <Route path="/video-cards" element={<VideoCardsPage />} />
         <Route path="/config" element={<Configurations />} />
+        <Route path="/basket" element={<PanierPage/>} />
+        <Route path="/checkout" element={<CheckoutPage/>} />
       </Routes>
     </Router>
   );
