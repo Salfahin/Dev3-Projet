@@ -1,0 +1,15 @@
+meta {
+  name: FetchLatestConfigurations
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:3001/api/latest/configurations
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,15 @@
+meta {
+  name: FetchLatestPowerSupplies
+  type: http
+  seq: 10
+}
+
+get {
+  url: http://localhost:3001/api/latest/power-supplies
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
