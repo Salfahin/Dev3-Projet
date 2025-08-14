@@ -1,6 +1,7 @@
 // The home page
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LatestSection from '../components/home_page/LatestSection.tsx';
 import {
   BsCpu,
   BsFan,
@@ -13,175 +14,101 @@ import {
   BsPower,
   BsSnow,
 } from 'react-icons/bs';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 function HomePage() {
-  const [data, setData] = useState(null);
-
-  /*
-  useEffect(() => {
-    fetch('') // Ton API Express
-      .then(res => res.json())
-      .then(json => setData(json));
-  }, []);
-  */
 
   return (
     <div className="space-y-10 p-6">
-      {/* Pre-builts section */}
-      <div>
-        <div className="flex items-center justify-between">
-          <h1 className="flex items-center gap-2 text-xl font-semibold">
-            <BsPcDisplay />
-            Pre-builts
-          </h1>
-          <Link to="/config" className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
-            See more »
-          </Link>
-        </div>
-        <hr className="my-2" />
-        {/* <HomeConfigsSection /> */}
-      </div>
+      <LatestSection
+        title="Pre-builts"
+        icon={<BsPcDisplay />}
+        section="configurations"
+        seeMoreLink="/config"
+        uniqueIdentifier='config_id'
+      />
 
-      {/* Processors section */}
-      <div>
-        <div className="flex items-center justify-between">
-          <h1 className="flex items-center gap-2 text-xl font-semibold">
-            <BsCpu />
-            Processors
-          </h1>
-          <Link to="/processors" className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
-            See more »
-          </Link>
-        </div>
-        <hr className="my-2" />
-      </div>
+      <LatestSection
+        title="Processors"
+        icon={<BsCpu />}
+        section="processors"
+        seeMoreLink="/processors"
+      />
 
-      {/* Coolers section */}
-      <div>
-        <div className="flex items-center justify-between">
-          <h1 className="flex items-center gap-2 text-xl font-semibold">
-            <BsSnow />
-            Coolers
-          </h1>
-          <Link to="/coolers" className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
-            See more »
-          </Link>
-        </div>
-        <hr className="my-2" />
-      </div>
+      <LatestSection
+        title="Coolers"
+        icon={<BsSnow />}
+        section="coolers"
+        seeMoreLink="/coolers"
+      />
 
-      {/* Motherboards section */}
-      <div>
-        <div className="flex items-center justify-between">
-          <h1 className="flex items-center gap-2 text-xl font-semibold">
-            <BsMotherboard />
-            Motherboards
-          </h1>
-          <Link to="/motherboards" className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
-            See more »
-          </Link>
-        </div>
-        <hr className="my-2" />
-      </div>
+      <LatestSection
+        title="Motherboards"
+        icon={<BsMotherboard />}
+        section="motherboards"
+        seeMoreLink="/motherboards"
+      />
 
-      {/* Memory section */}
-      <div>
-        <div className="flex items-center justify-between">
-          <h1 className="flex items-center gap-2 text-xl font-semibold">
-            <BsMemory />
-            Memory
-          </h1>
-          <Link to="/memory" className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
-            See more »
-          </Link>
-        </div>
-        <hr className="my-2" />
-      </div>
+      <LatestSection
+        title="Memory"
+        icon={<BsMemory />}
+        section="Memory"
+        seeMoreLink="/memory"
+      />
 
-      {/* Disks section */}
-      <div>
-        <div className="flex items-center justify-between">
-          <h1 className="flex items-center gap-2 text-xl font-semibold">
-            <BsHdd />
-            Disks
-          </h1>
-          <Link to="/disks" className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
-            See more »
-          </Link>
-        </div>
-        <hr className="my-2" />
-      </div>
+      <LatestSection
+        title="Disks"
+        icon={<BsHdd />}
+        section="disks"
+        seeMoreLink="/disks"
+      />
 
-      {/* Video Cards section */}
-      <div>
-        <div className="flex items-center justify-between">
-          <h1 className="flex items-center gap-2 text-xl font-semibold">
-            <BsGpuCard />
-            Video Cards
-          </h1>
-          <Link to="/video-cards" className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
-            See more »
-          </Link>
-        </div>
-        <hr className="my-2" />
-      </div>
+      <LatestSection
+        title="Coolers"
+        icon={<BsSnow />}
+        section="coolers"
+        seeMoreLink="/coolers"
+      />
 
-      {/* Cases section */}
-      <div>
-        <div className="flex items-center justify-between">
-          <h1 className="flex items-center gap-2 text-xl font-semibold">
-            <BsPc />
-            Cases
-          </h1>
-          <Link to="/cases" className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
-            See more »
-          </Link>
-        </div>
-        <hr className="my-2" />
-      </div>
+      <LatestSection
+        title="Video Cards"
+        icon={<BsGpuCard />}
+        section="video-cards"
+        seeMoreLink="/video-cards"
+      />
 
-      {/* Case Fans section */}
-      <div>
-        <div className="flex items-center justify-between">
-          <h1 className="flex items-center gap-2 text-xl font-semibold">
-            <BsFan />
-            Case Fans
-          </h1>
-          <Link to="/case-fans" className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
-            See more »
-          </Link>
-        </div>
-        <hr className="my-2" />
-      </div>
+      <LatestSection
+        title="Coolers"
+        icon={<BsSnow />}
+        section="coolers"
+        seeMoreLink="/coolers"
+      />
 
-      {/* Power Supplies section */}
-      <div>
-        <div className="flex items-center justify-between">
-          <h1 className="flex items-center gap-2 text-xl font-semibold">
-            <BsPower />
-            Power Supplies
-          </h1>
-          <Link to="/power-supplies" className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
-            See more »
-          </Link>
-        </div>
-        <hr className="my-2" />
-      </div>
+      <LatestSection
+        title="Cases"
+        icon={<BsPc />}
+        section="cases"
+        seeMoreLink="/cases"
+      />
 
-      {/* Others section */}
-      <div>
-        <div className="flex items-center justify-between">
-          <h1 className="flex items-center gap-2 text-xl font-semibold">
-            Others
-          </h1>
-          <Link to="/others" className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
-            See more »
-          </Link>
-        </div>
-        <hr className="my-2" />
-      </div>
+      <LatestSection
+        title="Fans"
+        icon={<BsFan />}
+        section="case-fans"
+        seeMoreLink="/case-fans"
+      />
+
+      <LatestSection
+        title="Power Supplies"
+        icon={<BsPower />}
+        section="power-supplies"
+        seeMoreLink="/power-supplies"
+      />
+
+      <LatestSection
+        title="Others"
+        section="others"
+        seeMoreLink="/others"
+      />
     </div>
   );
 }
