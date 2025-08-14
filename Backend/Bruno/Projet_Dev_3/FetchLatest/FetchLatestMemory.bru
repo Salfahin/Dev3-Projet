@@ -1,0 +1,15 @@
+meta {
+  name: FetchLatestMemory
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:3001/api/latest/memory
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

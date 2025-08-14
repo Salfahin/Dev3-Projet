@@ -1,3 +1,5 @@
+// ⛔ DO NOT TOUCH ⛔
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [

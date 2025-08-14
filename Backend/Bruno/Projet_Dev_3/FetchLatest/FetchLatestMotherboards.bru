@@ -1,0 +1,15 @@
+meta {
+  name: FetchLatestMotherboards
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:3001/api/latest/motherboards
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

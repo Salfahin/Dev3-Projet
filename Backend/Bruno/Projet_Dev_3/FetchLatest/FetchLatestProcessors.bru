@@ -1,0 +1,15 @@
+meta {
+  name: FetchLatestProcessors
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:3001/api/latest/processors
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
