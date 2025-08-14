@@ -11,7 +11,6 @@ export default function ConfigurationsPage() {
 
   const [specs, setSpecs] = useState([]);
 
-  // Fetch configurations au montage
   useEffect(() => {
     fetch('http://localhost:3001/api/configurations')
       .then(res => {
@@ -19,16 +18,13 @@ export default function ConfigurationsPage() {
         return res.json();
       })
       .then(data => {
-        console.log("Configurations reçues (brutes):", data);
-
-        // Normalisation : on renomme pour correspondre au reste du code
         const normalized = (Array.isArray(data) ? data : []).map(cfg => ({
           config_id: cfg.config_id ?? cfg.id,
           config_name: cfg.config_name ?? cfg.name,
-          ...cfg
+          author: cfg.author ?? "Anonyme",
+          price: cfg.price ?? null,
+          parts: cfg.parts ?? {},
         }));
-
-        console.log("Configurations normalisées:", normalized);
         setConfigurations(normalized);
       })
       .catch(err => {
@@ -37,7 +33,6 @@ export default function ConfigurationsPage() {
       });
   }, []);
 
-  // Au clic sur une config, récupère les parts associées
   useEffect(() => {
     if (!selectedConfig) {
       setParts([]);
@@ -46,55 +41,50 @@ export default function ConfigurationsPage() {
       return;
     }
 
-    if (!selectedConfig.config_id) {
-      console.error("⚠ selectedConfig n’a pas de config_id:", selectedConfig);
-      return;
-    }
+    const partsArray = Object.entries(selectedConfig.parts || {}).map(([category, value]) => ({
+      part_id: category,
+      part_name: value,
+      part_category: category
+    }));
 
-    fetch(`http://localhost:3001/api/configurations/${selectedConfig.config_id}/parts`)
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then(data => {
-        console.log(`Parts reçues pour config ${selectedConfig.config_id}:`, data);
-        setParts(Array.isArray(data) ? data : []);
-        setSelectedPart(null);
-        setSpecs([]);
-      })
-      .catch(err => {
-        console.error('Erreur fetch parts:', err);
-        setParts([]);
-        setSelectedPart(null);
-        setSpecs([]);
-      });
+    setParts(partsArray);
+    setSelectedPart(null);
+    setSpecs([]);
   }, [selectedConfig]);
 
-  // Au clic sur un part, récupère ses specs
+  //Parts
   useEffect(() => {
     if (!selectedPart) {
       setSpecs([]);
       return;
     }
 
-    if (!selectedPart.part_id) {
-      console.error("⚠ selectedPart n’a pas de part_id:", selectedPart);
-      return;
-    }
+    const fetchSpecs = async () => {
+      try {
+        const encodedPartName = encodeURIComponent(selectedPart.part_name);
+        const res = await fetch(`http://localhost:3001/api/specs/${encodedPartName}`);
+        if (!res.ok) {
+          if (res.status === 404) {
+            setSpecs([]);
+            return;
+          }
+          throw new Error(`HTTP ${res.status}`);
+        }
 
-    fetch(`http://localhost:3001/api/parts/${selectedPart.part_id}/specifications`)
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then(data => {
-        console.log(`Specs reçues pour part ${selectedPart.part_id}:`, data);
-        setSpecs(Array.isArray(data) ? data : []);
-      })
-      .catch(err => {
+        const data = await res.json();
+        const specsArray = Object.entries(data.specifications || {}).map(([key, value]) => ({
+          part_specification: key,
+          part_specification_value: value
+        }));
+
+        setSpecs(specsArray);
+      } catch (err) {
         console.error('Erreur fetch specifications:', err);
         setSpecs([]);
-      });
+      }
+    };
+
+    fetchSpecs();
   }, [selectedPart]);
 
   return (
@@ -103,9 +93,7 @@ export default function ConfigurationsPage() {
         <BsPcDisplay />
         Pre-built PCs
       </h1>
-
       <div className="flex gap-4">
-        {/* Configurations */}
         <div className="w-1/3 border p-4 rounded-lg">
           <h2 className="font-semibold mb-2">Configurations</h2>
           {configurations.length === 0 && (
@@ -129,7 +117,6 @@ export default function ConfigurationsPage() {
             </div>
           ))}
         </div>
-
         {/* Parts */}
         {selectedConfig && (
           <div className="w-1/3 border p-4 rounded-lg transition-opacity duration-200">
@@ -137,7 +124,7 @@ export default function ConfigurationsPage() {
             {parts.length > 0 ? (
               parts.map((part, index) => (
                 <div
-                  key={`${part.part_id || 'nopid'}-${index}`}
+                  key={`${part.part_id}-${index}`}
                   onClick={() => setSelectedPart(part)}
                   className={`cursor-pointer p-2 rounded ${
                     selectedPart?.part_id === part.part_id
@@ -145,7 +132,7 @@ export default function ConfigurationsPage() {
                       : 'hover:bg-purple-100 hover:text-purple-900'
                   }`}
                 >
-                  {part.part_name} – {part.part_manufacturer} ({part.part_price} €)
+                  {part.part_category} – {part.part_name}
                 </div>
               ))
             ) : (
@@ -153,7 +140,6 @@ export default function ConfigurationsPage() {
             )}
           </div>
         )}
-
         {/* Specs */}
         {selectedPart && (
           <div className="w-1/3 border p-4 rounded-lg transition-opacity duration-200">

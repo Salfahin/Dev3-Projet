@@ -3,6 +3,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+
 import express, { Request, Response } from 'express';
 import { Part } from './types/part';
 import { Configuration } from './types/configuration';
@@ -10,6 +11,9 @@ import { FetchParts } from './queries/fetchParts';
 import { FetchConfigs } from './queries/fetchConfigs';
 import { Product } from './types/product';
 import { FetchLatest } from './queries/fetchLatest';
+import { fetchSpecsByPartName } from './queries/FetchSpecs';
+
+
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -272,6 +276,31 @@ app.get('/api/parts/others', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   };
 });
+
+//FetchSpecs
+app.get('/api/specs/:partName', async (req, res) => {
+  try {
+    // Décodage du nom de la part depuis l'URL
+    const partName = decodeURIComponent(req.params.partName);
+
+    if (!partName) {
+      return res.status(400).json({ message: 'Nom de produit manquant.' });
+    }
+
+    const specs = await fetchSpecsByPartName(partName);
+
+    if (!specs || Object.keys(specs).length === 0) {
+      return res.status(404).json({ message: 'Aucune spécification trouvée pour ce produit.' });
+    }
+
+    res.json({ partName, specifications: specs });
+  } catch (error) {
+    console.error('Erreur lors de la récupération des specs :', error);
+    res.status(500).json({ message: 'Erreur serveur lors de la récupération des spécifications.' });
+  }
+});
+
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

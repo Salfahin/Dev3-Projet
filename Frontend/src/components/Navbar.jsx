@@ -1,6 +1,10 @@
 // The top bar / navigation bar component.
 
 import { Link, useLocation } from "react-router-dom";
+import { CgProfile } from "react-icons/cg";
+import { IoMdInformationCircleOutline} from "react-icons/io";
+import { BsBasket } from "react-icons/bs";
+
 
 
 const NavigationBar = () => {
@@ -18,8 +22,9 @@ const NavigationBar = () => {
     { href: '/case-fans', label: 'Case Fans' },
     { href: '/power-supplies', label: 'Power Supplies' },
     { href: '/others', label: 'Other' },
-    {href :'/basket' , label : 'Basket'},
-    { href: '/about', label: 'About' },
+    {href : '/profile',icon : <CgProfile size={30} />},
+    {href :'/basket' , icon : <BsBasket size={30} />},
+    { href: '/about', icon : <IoMdInformationCircleOutline  size={30} />},
   ];
 
   return (
@@ -46,6 +51,7 @@ const NavigationBar = () => {
                   : 'hover:bg-white hover:text-black'
                 }`}
             >
+              {item.icon}
               {item.label}
             </Link>
           );
