@@ -20,137 +20,43 @@ const PORT = process.env.PORT || 3001;
 const cors = require('cors');
 app.use(cors());
 
-
 // Middleware to parse JSON
 app.use(express.json());
 
 // Requests
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, Express with TypeScript!');
-});
+// HOME PAGE ROUTES
 
-// HOME PAGE
+interface Category {
+  route: string;
+  index: number | undefined; // undefined for the default FetchLatest
+  name: string;
+}
 
-// Configurations section
-app.get('/api/latest/configurations', async (req: Request, res: Response) => {
-  try {
-    const products: Product[] = await FetchLatest();
-    res.json(products);
-  } catch (error) {
-    console.error(':(\nFailed to fetch latest products.');
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
+const categories: Category[] = [
+  { route: 'configurations', index: undefined, name: 'products' },
+  { route: 'processors', index: 0, name: 'processors' },
+  { route: 'coolers', index: 1, name: 'coolers' },
+  { route: 'motherboards', index: 4, name: 'motherboards' },
+  { route: 'memory', index: 5, name: 'memory' },
+  { route: 'disks', index: 6, name: 'disks' },
+  { route: 'video-cards', index: 2, name: 'video cards' },
+  { route: 'cases', index: 7, name: 'cases' },
+  { route: 'case-fans', index: 8, name: 'case fans' },
+  { route: 'power-supplies', index: 3, name: 'power supplies' },
+  { route: 'others', index: 9, name: 'others' },
+];
 
-// Processors section
-app.get('/api/latest/processors', async (req: Request, res: Response) => {
-  try {
-    const products: Product[] = await FetchLatest(0);
-    res.json(products);
-  } catch (error) {
-    console.error(':(\nFailed to fetch latest processors.');
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-// Coolers section
-app.get('/api/latest/coolers', async (req: Request, res: Response) => {
-  try {
-    const products: Product[] = await FetchLatest(1);
-    res.json(products);
-  } catch (error) {
-    console.error(':(\nFailed to fetch latest coolers.');
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-// Motherboards section
-app.get('/api/latest/motherboards', async (req: Request, res: Response) => {
-  try {
-    const products: Product[] = await FetchLatest(4);
-    res.json(products);
-  } catch (error) {
-    console.error(':(\nFailed to fetch latest motherboards.');
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-// Memory section
-app.get('/api/latest/memory', async (req: Request, res: Response) => {
-  try {
-    const products: Product[] = await FetchLatest(5);
-    res.json(products);
-  } catch (error) {
-    console.error(':(\nFailed to fetch latest memory.');
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-// Disks section
-app.get('/api/latest/disks', async (req: Request, res: Response) => {
-  try {
-    const products: Product[] = await FetchLatest(6);
-    res.json(products);
-  } catch (error) {
-    console.error(':(\nFailed to fetch latest disks.');
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-// Video cards section
-app.get('/api/latest/video-cards', async (req: Request, res: Response) => {
-  try {
-    const products: Product[] = await FetchLatest(2);
-    res.json(products);
-  } catch (error) {
-    console.error(':(\nFailed to fetch latest video cards.');
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-// Cases section
-app.get('/api/latest/cases', async (req: Request, res: Response) => {
-  try {
-    const products: Product[] = await FetchLatest(7);
-    res.json(products);
-  } catch (error) {
-    console.error(':(\nFailed to fetch latest cases.');
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-// Case fans section
-app.get('/api/latest/case-fans', async (req: Request, res: Response) => {
-  try {
-    const products: Product[] = await FetchLatest(8);
-    res.json(products);
-  } catch (error) {
-    console.error(':(\nFailed to fetch latest case fans.');
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-// Power supplies section
-app.get('/api/latest/power-supplies', async (req: Request, res: Response) => {
-  try {
-    const products: Product[] = await FetchLatest(3);
-    res.json(products);
-  } catch (error) {
-    console.error(':(\nFailed to fetch latest power supplies.');
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-// Others section
-app.get('/api/latest/others', async (req: Request, res: Response) => {
-  try {
-    const products: Product[] = await FetchLatest(9);
-    res.json(products);
-  } catch (error) {
-    console.error(':(\nFailed to fetch latest others.');
-    res.status(500).json({ error: 'Internal server error' });
-  };
+categories.forEach(({ route, index, name }) => {
+  app.get(`/api/latest/${route}`, async (req: Request, res: Response) => {
+    try {
+      const products: Product[] = index !== undefined ? await FetchLatest(index) : await FetchLatest();
+      res.json(products);
+    } catch (error) {
+      console.error(`:(\nFailed to fetch latest ${name}.`);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 });
 
 // PRODUCTS PAGES
@@ -166,115 +72,37 @@ app.get('/api/configurations', async (req: Request, res: Response) => {
   };
 });
 
-//Processors page.
-app.get('/api/parts/processors', async (req: Request, res: Response) => {
-  try {
-    const processors: Part[] = await FetchParts(0);
-    res.json(processors);
-  } catch (error) {
-    console.error('Failed to fetch processors:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
+// Parts pages.
 
-//CPU Coolers page.
-app.get('/api/parts/cpu_coolers', async (req: Request, res: Response) => {
-  try {
-    const cpuCoolers: Part[] = await FetchParts(1);
-    res.json(cpuCoolers);
-  } catch (error) {
-    console.error('Failed to fetch CPU coolers:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
+interface PartCategory {
+  route: string;
+  index: number;
+  name: string;
+}
 
-//Motherboards page
-app.get('/api/parts/motherboards', async (req: Request, res: Response) => {
-  try {
-    const motherboards: Part[] = await FetchParts(4);
-    res.json(motherboards);
-  } catch (error) {
-    console.error('Failed to fetch motherboards:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
+const partCategories: PartCategory[] = [
+  { route: 'processors', index: 0, name: 'processors' },
+  { route: 'cpu_coolers', index: 1, name: 'CPU coolers' },
+  { route: 'motherboards', index: 4, name: 'motherboards' },
+  { route: 'memory', index: 5, name: 'memory' },
+  { route: 'disks', index: 6, name: 'disks' },
+  { route: 'video_cards', index: 2, name: 'video cards' },
+  { route: 'cases', index: 7, name: 'cases' },
+  { route: 'case_fans', index: 8, name: 'case fans' },
+  { route: 'power_supplies', index: 3, name: 'power supplies' },
+  { route: 'others', index: 9, name: 'others' },
+];
 
-
-//Memory page
-app.get('/api/parts/memory', async (req: Request, res: Response) => {
-  try {
-    const memory: Part[] = await FetchParts(5);
-    res.json(memory);
-  } catch (error) {
-    console.error('Failed to fetch memory:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-//Disks page
-app.get('/api/parts/disks', async (req: Request, res: Response) => {
-  try {
-    const disks: Part[] = await FetchParts(6);
-    res.json(disks);
-  } catch (error) {
-    console.error('Failed to fetch disks:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-//Video cards page
-app.get('/api/parts/video_cards', async (req: Request, res: Response) => {
-  try {
-    const videoCards: Part[] = await FetchParts(2);
-    res.json(videoCards);
-  } catch (error) {
-    console.error('Failed to fetch video cards:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-//Cases page
-app.get('/api/parts/cases', async (req: Request, res: Response) => {
-  try {
-    const cases: Part[] = await FetchParts(7);
-    res.json(cases);
-  } catch (error) {
-    console.error('Failed to fetch cases:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-//Case fans page
-app.get('/api/parts/case_fans', async (req: Request, res: Response) => {
-  try {
-    const caseFans: Part[] = await FetchParts(8);
-    res.json(caseFans);
-  } catch (error) {
-    console.error('Failed to fetch case fans:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-//Power supplies page
-app.get('/api/parts/power_supplies', async (req: Request, res: Response) => {
-  try {
-    const powerSupplies: Part[] = await FetchParts(3);
-    res.json(powerSupplies);
-  } catch (error) {
-    console.error('Failed to fetch power supplies:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  };
-});
-
-//Others page
-app.get('/api/parts/others', async (req: Request, res: Response) => {
-  try {
-    const others: Part[] = await FetchParts(9);
-    res.json(others);
-  } catch (error) {
-    console.error('Failed to fetch others:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  };
+partCategories.forEach(({ route, index, name }) => {
+  app.get(`/api/parts/${route}`, async (req: Request, res: Response) => {
+    try {
+      const parts: Part[] = await FetchParts(index);
+      res.json(parts);
+    } catch (error) {
+      console.error(`Failed to fetch ${name}:`, error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 });
 
 //FetchSpecs
