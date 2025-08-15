@@ -11,6 +11,9 @@ export default function SubmissionForm() {
   const [partManufacturer, setPartManufacturer] = useState("");
   const [partPrice, setPartPrice] = useState("");
 
+  // Configuration form state
+  const [configName, setConfigName] = useState("");
+
   const handleChange = (index, field, value) => {
     const newRows = [...rows];
     newRows[index][field] = value;
@@ -21,25 +24,27 @@ export default function SubmissionForm() {
     setRows([...rows, { specification: "", value: "" }]);
   };
 
-  const handleSubmit = () => {
+  const handleSubmitPart = async () => { // This is called to submit a part.
     // Convert the rows array to an object of key/value pairs
-    const specifications = {};
-    rows.forEach(row => {
-      if (row.specification) specifications[row.specification] = row.value;
-    });
+    const partData = {
+      part_name: partName,
+      part_manufacturer: partManufacturer,
+      part_price: parseFloat(partPrice),
+      part_type: parseInt(partType),
+    };
 
-    const data = [
-      {
-        type: parseInt(partType), // numeric type
-        name: partName,
-        manufacturer: partManufacturer,
-        price: parseFloat(partPrice),
-        specifications: specifications
-      }
-    ];
+    try {
+      const response = await fetch("http://localhost:3001/api/add-part", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(partData),
+      });
 
-    console.log(JSON.stringify(data, null, 2));
-    alert("JSON data logged to console!");
+      const result = await response.json();
+      console.log("Inserted part:", result);
+    } catch (error) {
+      console.error("Error submitting part:", error);
+    }
   };
 
   return (
@@ -72,7 +77,7 @@ export default function SubmissionForm() {
       {activeTab === "part" && (
         <div>
           <div>
-            <label htmlFor="partType">Select the type of part:</label>
+            <label htmlFor="partType">Select below the <strong>type</strong> of part.</label>
             <select
               id="partType"
               value={partType}
@@ -91,9 +96,9 @@ export default function SubmissionForm() {
               <option value="9">Other</option>
             </select>
           </div>
-
+          <br />
           <div>
-            <label>Name:</label>
+            <label>What is the <strong>name</strong> of the part?</label>
             <input
               type="text"
               value={partName}
@@ -102,9 +107,9 @@ export default function SubmissionForm() {
               placeholder="e.g. AMD Ryzen 5 5600X"
             />
           </div>
-
+          <br />
           <div>
-            <label>Manufacturer:</label>
+            <label>What/who is its <strong>manufacturer</strong>?</label>
             <input
               type="text"
               value={partManufacturer}
@@ -113,9 +118,9 @@ export default function SubmissionForm() {
               placeholder="e.g. AMD"
             />
           </div>
-
+          <br />
           <div>
-            <label>Price:</label>
+            <label>How much does the part <strong>cost</strong>?</label>
             <input
               type="number"
               value={partPrice}
@@ -124,9 +129,9 @@ export default function SubmissionForm() {
               placeholder="e.g. 130"
             />
           </div>
-
+          <br />
           <div>
-            <p className="mb-2">Specifications:</p>
+            <p className="mb-2">What are the various <strong>specifications</strong> of the part?</p>
             <table className="border border-black w-full border-collapse">
               <thead>
                 <tr>
@@ -163,20 +168,33 @@ export default function SubmissionForm() {
               </tbody>
             </table>
           </div>
-
-          <button
-            onClick={handleSubmit}
-            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Continue
-          </button>
+          <br />
+          <div>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={handleSubmitPart}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
       {/* Config Tab */}
       {activeTab === "config" && (
         <div>
-          <p>Configuration form will go here.</p>
+          <div>
+            <label>Enter below the <strong>name</strong> of the configuration:</label>
+            <input
+              type="text"
+              value={configName}
+              onChange={(e) => setPartName(e.target.value)}
+              className="border p-2 rounded w-full"
+              placeholder="e.g. My Personal Configuration"
+            />
+          </div>
         </div>
       )}
     </div>

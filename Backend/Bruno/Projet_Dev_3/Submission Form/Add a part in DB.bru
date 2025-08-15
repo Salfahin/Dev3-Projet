@@ -1,0 +1,24 @@
+meta {
+  name: Add a part in DB
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3001/api/add-parts
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "part_name": "AMD Ryzen 7 9800X3D",
+    "part_manufacturer": "AMD",
+    "part_price": 451.51,
+    "part_type": 0
+  }
+}
+
+settings {
+  encodeUrl: true
+}

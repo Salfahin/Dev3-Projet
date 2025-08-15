@@ -12,6 +12,7 @@ import { FetchConfigs } from './queries/fetchConfigs';
 import { Product } from './types/product';
 import { FetchLatest } from './queries/fetchLatest';
 import { fetchSpecsByPartName } from './queries/FetchSpecs';
+import { supabase } from './lib/supabaseClient';
 
 
 
@@ -128,6 +129,43 @@ app.get('/api/specs/:partName', async (req, res) => {
   }
 });
 
+
+// Submit form.
+
+app.post('/api/add-part', async (req: Request, res: Response) => { // This is 100% GPT-made.
+  try {
+    const { part_name, part_manufacturer, part_price, part_type } = req.body;
+
+    // Validate required fields
+    if (!part_name || !part_manufacturer || !part_price || part_type === undefined) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // Upsert the part (insert if new, do nothing if exists)
+    const { data, error } = await supabase
+      .from('parts')
+      .upsert(
+        [{ part_name, part_manufacturer, part_price, part_type }],
+        { onConflict: 'part_name', ignoreDuplicates: true } // prevent duplicate errors
+      )
+      .select(); // returns inserted/updated row
+
+    if (error) {
+      console.error('Supabase upsert error:', error);
+      return res.status(500).json({ error: 'Failed to insert part' });
+    }
+
+    // If data is empty, it means the part already existed
+    if (!data || data.length === 0) {
+      return res.status(200).json({ message: 'Part already exists, no changes made.' });
+    }
+
+    res.status(201).json({ message: 'Part added successfully', part: data[0] });
+  } catch (err) {
+    console.error('Server error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 app.listen(PORT, () => {
