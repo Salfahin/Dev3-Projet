@@ -17,6 +17,7 @@ import VideoCardsPage from './pages/VideoCards';
 import NavigationBar from './components/Navbar';
 import PanierPage from './pages/basket';
 import CheckoutPage from './pages/Checkout';
+import SubmissionForm from './pages/SubmissionForm';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/power-supplies" element={<PowerSuppliesPage />} />
         <Route path="/video-cards" element={<VideoCardsPage />} />
         <Route path="/config" element={<Configurations />} />
+        <Route path="/submit" element={<SubmissionForm />} />
         <Route path="/basket" element={<PanierPage/>} />
         <Route path="/checkout" element={<CheckoutPage/>} />
       </Routes>
