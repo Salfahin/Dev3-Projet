@@ -22,9 +22,9 @@ const NavigationBar = () => {
     { href: '/case-fans', label: 'Case Fans' },
     { href: '/power-supplies', label: 'Power Supplies' },
     { href: '/others', label: 'Other' },
-    {href : '/profile',icon : <CgProfile size={30} />},
-    {href :'/basket' , icon : <BsBasket size={30} />},
-    { href: '/about', icon : <IoMdInformationCircleOutline  size={30} />},
+    {href : '/profile',icon : <CgProfile size={25} />},
+    {href :'/basket' , icon : <BsBasket size={25} />},
+    { href: '/about', icon : <IoMdInformationCircleOutline  size={25} />},
   ];
 
   return (
