@@ -132,40 +132,77 @@ app.get('/api/specs/:partName', async (req, res) => {
 
 // Submit form.
 
-app.post('/api/add-part', async (req: Request, res: Response) => { // This is 100% GPT-made.
+// Adds a part into "parts"
+app.post('/api/add-part', async (req: Request, res: Response) => {
   try {
     const { part_name, part_manufacturer, part_price, part_type } = req.body;
 
-    // Validate required fields
     if (!part_name || !part_manufacturer || !part_price || part_type === undefined) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // Upsert the part (insert if new, do nothing if exists)
     const { data, error } = await supabase
       .from('parts')
-      .upsert(
-        [{ part_name, part_manufacturer, part_price, part_type }],
-        { onConflict: 'part_name', ignoreDuplicates: true } // prevent duplicate errors
-      )
-      .select(); // returns inserted/updated row
+      .insert([{ 
+        part_name, 
+        part_manufacturer, 
+        part_price, 
+        part_type 
+      }])
+      .select('part_id, part_name, part_manufacturer, part_price, part_type');
 
     if (error) {
-      console.error('Supabase upsert error:', error);
+      console.error('Supabase insert error:', error);
       return res.status(500).json({ error: 'Failed to insert part' });
     }
 
-    // If data is empty, it means the part already existed
-    if (!data || data.length === 0) {
-      return res.status(200).json({ message: 'Part already exists, no changes made.' });
-    }
+    res.status(201).json({ 
+      message: 'Part added successfully', 
+      part: data[0] // includes part_id
+    });
 
-    res.status(201).json({ message: 'Part added successfully', part: data[0] });
   } catch (err) {
     console.error('Server error:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// Adds the specification of a part into "parts_specifications"
+app.post("/api/add-specifications", async (req, res) => {
+  try {
+    const { part_id, specifications } = req.body;
+
+    if (!part_id || !Array.isArray(specifications)) {
+      return res.status(400).json({ error: "Invalid request" });
+    }
+
+    const { data, error } = await supabase
+      .from("parts_specifications")
+      .insert(
+        specifications.map(spec => ({
+          part_id,
+          part_specification: spec.specification,
+          part_specification_value: spec.value
+        }))
+      );
+
+    if (error) {
+      console.error("Supabase insert error:", error);
+      return res.status(500).json({ 
+        error: "Failed to insert specifications", 
+        details: error.message,
+        hint: error.hint
+      });
+    }
+
+    res.json({ success: true, data });
+  } catch (err) {
+    console.error("Server error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
 
 
 app.listen(PORT, () => {

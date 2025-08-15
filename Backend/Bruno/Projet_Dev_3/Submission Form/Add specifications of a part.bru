@@ -1,0 +1,25 @@
+meta {
+  name: Add specifications of a part
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3001/api/add-specifications
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "part_id": 42,
+    "specifications": [
+      { "specification": "Socket", "value": "AM4" },
+      { "specification": "Cores", "value": "6" }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+}
