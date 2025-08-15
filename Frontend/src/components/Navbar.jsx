@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { IoMdInformationCircleOutline} from "react-icons/io";
 import { BsBasket } from "react-icons/bs";
+import { MdOutlinePostAdd } from "react-icons/md";
 
 
 
@@ -22,8 +23,9 @@ const NavigationBar = () => {
     { href: '/case-fans', label: 'Case Fans' },
     { href: '/power-supplies', label: 'Power Supplies' },
     { href: '/others', label: 'Other' },
-    {href : '/profile',icon : <CgProfile size={25} />},
-    {href :'/basket' , icon : <BsBasket size={25} />},
+    { href : '/profile',icon : <CgProfile size={25} />},
+    { href : '/basket' , icon : <BsBasket size={25} />},
+    { href : '/submit', icon : <MdOutlinePostAdd size={25} /> },
     { href: '/about', icon : <IoMdInformationCircleOutline  size={25} />},
   ];
 
@@ -39,20 +41,25 @@ const NavigationBar = () => {
 
       {/* Navigation Items */}
       <nav className="flex flex-1">
-        {navigationItems.map((item) => {
+        {navigationItems.map((item, index) => {
           const isActive = location.pathname === item.href;
+          const isSquare = index >= navigationItems.length - 4; // last four items
+
           return (
             <Link
               key={item.href}
               to={item.href}
-              className={`flex-1 flex items-center justify-center transition-colors duration-200
+              className={`
+                ${isSquare ? 'w-16 flex-none' : 'flex-1'}
+                flex items-center justify-center transition-colors duration-200
                 ${isActive
                   ? 'bg-[#79c39e] text-white font-semibold cursor-default'
                   : 'hover:bg-white hover:text-black'
-                }`}
+                }
+              `}
             >
               {item.icon}
-              {item.label}
+              {!isSquare && item.label}
             </Link>
           );
         })}
