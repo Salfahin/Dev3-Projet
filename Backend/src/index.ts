@@ -26,7 +26,7 @@ app.use(express.json());
 
 // Requests
 
-// HOME PAGE ROUTES
+// # HOME PAGE ROUTES
 
 interface Category {
   route: string;
@@ -60,9 +60,9 @@ categories.forEach(({ route, index, name }) => {
   });
 });
 
-// PRODUCTS PAGES
+// # PRODUCTS PAGES
 
-//Configurations page.
+// ## Configurations page.
 app.get('/api/configurations', async (req: Request, res: Response) => {
   try {
     const configurations: Configuration[] = await FetchConfigs();
@@ -73,7 +73,7 @@ app.get('/api/configurations', async (req: Request, res: Response) => {
   };
 });
 
-// Parts pages.
+// ## Parts pages.
 
 interface PartCategory {
   route: string;
@@ -130,9 +130,11 @@ app.get('/api/specs/:partName', async (req, res) => {
 });
 
 
-// Submit form.
+// # SUBMISSION FORM
 
-// Adds a part into "parts"
+// ## Part form
+
+// ### Adds a part into "parts".
 app.post('/api/add-part', async (req: Request, res: Response) => {
   try {
     const { part_name, part_manufacturer, part_price, part_type } = req.body;
@@ -167,7 +169,7 @@ app.post('/api/add-part', async (req: Request, res: Response) => {
   }
 });
 
-// Adds the specification of a part into "parts_specifications"
+// ### Adds the specification of a part into "parts_specifications".
 app.post("/api/add-specifications", async (req, res) => {
   try {
     const { part_id, specifications } = req.body;
@@ -202,9 +204,47 @@ app.post("/api/add-specifications", async (req, res) => {
   }
 });
 
+// ## Configuration form
+
+// ### Adds a configuration into "configurations".
+
+app.post('/api/add-config', async (req: Request, res: Response) => {
+  try {
+    const { config_name, config_author } = req.body;
+
+    if (!config_name || !config_author === undefined) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const { data, error } = await supabase
+      .from('configurations')
+      .insert([{ 
+        config_name, 
+        config_author
+      }])
+      .select('config_id, config_name, config_author');
+
+    if (error) {
+      console.error('Supabase insert error:', error);
+      return res.status(500).json({ error: 'Failed to insert configuration' });
+    }
+
+    res.status(201).json({ 
+      message: 'Configuration added successfully', 
+      config: data[0] // includes config_id
+    });
+
+  } catch (err) {
+    console.error('Server error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// ### Adds the parts of the configurations into "configurations_parts".
 
 
 
+// # START
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

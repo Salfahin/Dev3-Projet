@@ -1,6 +1,6 @@
-// The form in SubmissionForm that submits the specifications of a part provided in step 1.
+// The form in SubmissionForm that submits the specifications of a part provided in step 1. (it is step 2)
 
-export default function SpecificationsForm({ partId, rows, handleChange, addRow, onSubmit }) {
+export default function PartSpecificationsForm({ partId, rows, handleChange, addRow, onSubmit }) {
   return (
     <div>
       <p className="mb-2">
