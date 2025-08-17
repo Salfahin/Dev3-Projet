@@ -242,7 +242,90 @@ app.post('/api/add-config', async (req: Request, res: Response) => {
 
 // ### Adds the parts of the configurations into "configurations_parts".
 
+// #### First, the form uses these two points to make suggestions to the user.
 
+const partTypes = [ // We should ideally fetch this from the database at one point.
+  { part_type: 0, part_label: "CPU" },
+  { part_type: 1, part_label: "CPU_cooler" },
+  { part_type: 2, part_label: "GPU" },
+  { part_type: 3, part_label: "PSU" },
+  { part_type: 4, part_label: "Motherboard" },
+  { part_type: 5, part_label: "Memory" },
+  { part_type: 6, part_label: "Storage" },
+  { part_type: 7, part_label: "Case" },
+  { part_type: 8, part_label: "Case fan" },
+  { part_type: 9, part_label: "Custom" }
+];
+
+app.get('/api/part-types', (req: Request, res: Response) => {
+  res.json(partTypes);
+});
+
+app.get('/api/parts-by-type/:type', async (req: Request, res: Response) => {
+  try {
+    const partTypeLabel = req.params.type; // e.g., "CPU", "Memory"
+    if (!partTypeLabel) {
+      return res.status(400).json({ error: 'Missing part type' });
+    }
+
+    // Find the type index from your predefined partTypes
+    const partTypeObj = partTypes.find(pt => pt.part_label.toLowerCase() === partTypeLabel.toLowerCase());
+    if (!partTypeObj) {
+      return res.status(404).json({ error: 'Unknown part type' });
+    }
+
+    // Fetch parts from the database with that type
+    const { data, error } = await supabase
+      .from('parts')
+      .select('part_id, part_name, part_manufacturer, part_price, part_type')
+      .eq('part_type', partTypeObj.part_type);
+
+    if (error) {
+      console.error('Supabase fetch error:', error);
+      return res.status(500).json({ error: 'Failed to fetch parts' });
+    }
+
+    res.json({ partType: partTypeLabel, parts: data });
+
+  } catch (err) {
+    console.error('Server error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// #### This is the route used to submit the parts of a config in the DB.
+
+app.post('/api/config-parts', async (req: Request, res: Response) => {
+  try {
+    const { config_id, parts } = req.body;
+
+    if (!config_id || !Array.isArray(parts)) {
+      return res.status(400).json({ error: 'Invalid payload: missing config_id or parts' });
+    }
+
+    // Insert all parts for this configuration
+    const { data, error } = await supabase
+      .from('config_parts')
+      .insert(
+        parts.map(p => ({
+          config_id,
+          part_type: p.part_type,
+          part_id: p.part_id
+        }))
+      );
+
+    if (error) {
+      console.error('Supabase insert error:', error);
+      return res.status(500).json({ error: 'Failed to save configuration parts' });
+    }
+
+    res.json({ success: true, insertedParts: data });
+
+  } catch (err) {
+    console.error('Server error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 // # START
 app.listen(PORT, () => {

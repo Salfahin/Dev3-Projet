@@ -1,17 +1,35 @@
+import { useEffect, useState } from "react";
+
 export default function ConfigPartsForm({ configId, rows, handleChange, addRow, onSubmit }) {
-  // Example part types (you can adjust these to match your DB values)
-  const partTypes = [
-    "Processor",
-    "Motherboard",
-    "Memory",
-    "Disk",
-    "Video Card",
-    "Power Supply",
-    "Case",
-    "Case Fan",
-    "Cooler",
-    "Other",
-  ];
+  const [partTypes, setPartTypes] = useState([]);
+  const [partsByType, setPartsByType] = useState({}); // { [type]: parts array }
+
+  // Fetch part types once
+  useEffect(() => {
+    const fetchPartTypes = async () => {
+      try {
+        const res = await fetch("http://localhost:3001/api/part-types");
+        const types = await res.json();
+        setPartTypes(types);
+      } catch (err) {
+        console.error("Error fetching part types:", err);
+      }
+    };
+    fetchPartTypes();
+  }, []);
+
+  // Fetch parts for a specific type if not already fetched
+  const fetchPartsForType = async (type) => {
+    if (!type || partsByType[type]) return; // already fetched
+
+    try {
+      const res = await fetch(`http://localhost:3001/api/parts-by-type/${type}`);
+      const data = await res.json();
+      setPartsByType((prev) => ({ ...prev, [type]: data.parts || [] }));
+    } catch (err) {
+      console.error(`Error fetching parts for type ${type}:`, err);
+    }
+  };
 
   return (
     <div>
@@ -30,34 +48,55 @@ export default function ConfigPartsForm({ configId, rows, handleChange, addRow, 
         <tbody>
           {rows.map((row, index) => (
             <tr key={index}>
-              {/* Left column now uses <select> */}
+              {/* Part Type selector */}
               <td className="border p-2">
                 <select
                   value={row.type}
-                  onChange={(e) => handleChange(index, "type", e.target.value)}
+                  onChange={(e) => {
+                    const newType = e.target.value;
+                    handleChange(index, "type", newType);
+                    fetchPartsForType(newType);
+                  }}
                   className="w-full border px-2 py-1 rounded"
                 >
                   <option value="">-- Select a type --</option>
-                  {partTypes.map((type, i) => (
-                    <option key={i} value={type}>
-                      {type}
+                  {partTypes.map((type) => (
+                    <option key={type.part_type} value={type.part_label}>
+                      {type.part_label}
                     </option>
                   ))}
                 </select>
               </td>
 
-              {/* Right column remains an input */}
+              {/* Part selector or custom input */}
               <td className="border p-2">
-                <input
-                  type="text"
-                  value={row.value}
-                  onChange={(e) => handleChange(index, "value", e.target.value)}
-                  placeholder="e.g. Ryzen 7 5800X"
-                  className="w-full border px-2 py-1 rounded"
-                />
+                {row.type && partsByType[row.type] ? (
+                  <select
+                    value={row.value}
+                    onChange={(e) => handleChange(index, "value", e.target.value)}
+                    className="w-full border px-2 py-1 rounded"
+                  >
+                    <option value="">-- Select a part --</option>
+                    {partsByType[row.type].map((part) => (
+                      <option key={part.part_id} value={part.part_id}>
+                        {part.part_name}
+                      </option>
+                    ))}
+                    <option value="custom">-- Other (custom) --</option>
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    value={row.value}
+                    onChange={(e) => handleChange(index, "value", e.target.value)}
+                    placeholder="Enter custom part"
+                    className="w-full border px-2 py-1 rounded"
+                  />
+                )}
               </td>
             </tr>
           ))}
+
           <tr>
             <td
               colSpan={2}
