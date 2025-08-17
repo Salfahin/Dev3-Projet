@@ -56,7 +56,7 @@ export default function PartSubmissionForm() {
       });
 
       const result = await response.json();
-      
+      alert(":)\nGreat. Your part was added.\nThanks!");
     } catch (error) {
       console.error("Error saving specifications:", error);
     }
@@ -78,6 +78,7 @@ export default function PartSubmissionForm() {
         />
       ) : (
         <PartSpecificationsForm
+          partId={partId}
           rows={rows}
           handleChange={handleChange}
           addRow={addRow}
