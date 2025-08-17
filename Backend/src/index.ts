@@ -295,7 +295,7 @@ app.get('/api/parts-by-type/:type', async (req: Request, res: Response) => {
 
 // #### This is the route used to submit the parts of a config in the DB.
 
-app.post('/api/config-parts', async (req: Request, res: Response) => {
+app.post('/api/add-configparts', async (req: Request, res: Response) => {
   try {
     const { config_id, parts } = req.body;
 
@@ -303,16 +303,21 @@ app.post('/api/config-parts', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invalid payload: missing config_id or parts' });
     }
 
-    // Insert all parts for this configuration
+    // Prepare rows to insert
+    const rowsToInsert = parts
+      .map(p => ({
+        config_id,
+        config_part_id: Number(p.value), // convert value to number
+      }))
+      .filter(p => !isNaN(p.config_part_id)); // ignore invalid entries
+
+    if (rowsToInsert.length === 0) {
+      return res.status(400).json({ error: 'No valid parts to insert' });
+    }
+
     const { data, error } = await supabase
-      .from('config_parts')
-      .insert(
-        parts.map(p => ({
-          config_id,
-          part_type: p.part_type,
-          part_id: p.part_id
-        }))
-      );
+      .from('configurations_parts')
+      .insert(rowsToInsert);
 
     if (error) {
       console.error('Supabase insert error:', error);
@@ -326,6 +331,7 @@ app.post('/api/config-parts', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 // # START
 app.listen(PORT, () => {
