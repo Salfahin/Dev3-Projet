@@ -16,6 +16,7 @@ export async function FetchConfigs(
       config_name,
       config_price,
       config_author,
+      approved,
       configurations_parts (
         parts (
           part_id,
@@ -26,7 +27,8 @@ export async function FetchConfigs(
           )
         )
       )
-    `);
+    `)
+    .eq('approved', true);
 
   if (error) {
     console.error('Supabase fetch error:', error);
