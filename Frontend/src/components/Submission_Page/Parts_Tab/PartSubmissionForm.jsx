@@ -79,6 +79,7 @@ export default function PartSubmissionForm() {
         />
       ) : (
         <PartSpecificationsForm
+          partId={partId}
           rows={rows}
           handleChange={handleChange}
           addRow={addRow}
