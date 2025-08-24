@@ -52,7 +52,7 @@ export default function ConfigSubmissionForm() {
       });
 
       const result = await response.json();
-      alert(":)\nSuccessfully added your configurations and its parts. Thanks!");
+      alert(":)\nYour configuration has been submitted. It is now waiting for review before being added to our webiste.\nThanks!");
       window.location.href = `/config`;
     } catch (error) {
       console.error(":(\nError saving the parts of the configuration:", error);

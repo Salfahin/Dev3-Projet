@@ -56,7 +56,8 @@ export default function PartSubmissionForm() {
       });
 
       const result = await response.json();
-      alert(":)\nGreat. Your part was added.\nThanks!");
+      
+      alert(":)\nYour part has been submitted. It is now waiting for review before being added to our webiste.\nThanks!");
     } catch (error) {
       console.error("Error saving specifications:", error);
     }
