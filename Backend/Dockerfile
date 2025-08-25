@@ -3,7 +3,7 @@ FROM node:20
 WORKDIR /app
 
 # Copy package manifests first
-COPY package.json ./
+COPY package.json ../pnpm-lock.yaml ./
 
 # Install pnpm globally
 RUN npm install -g pnpm
