@@ -20,7 +20,7 @@ import CheckoutPage from './pages/Checkout';
 import AuthPage from './pages/AuthPage';
 import ProtectedRoute from './components/protected_routes/ProtectedRoute';
 import ProfilePage from './pages/ProfilePage';
-
+import Submission from './pages/Submission';
 
 function App() {
   return (
@@ -44,6 +44,7 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage/>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/auth" element={<AuthPage/>} />
+        <Route path="/submit" element={<Submission/>} />
       </Routes>
     </Router>
   );
