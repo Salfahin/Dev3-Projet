@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
 
 export default function AuthPage() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function AuthPage() {
   useEffect(() => {
     const fetchCsrf = async () => {
       try {
-        await fetch('http://localhost:3001/api/auth/csrf', {
+        await fetch(`${API_URL}/api/auth/csrf`, {
           method: 'GET',
           credentials: 'include', // récupère le cookie httpOnly
         });
@@ -41,7 +42,7 @@ export default function AuthPage() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch('http://localhost:3001/api/me', {
+        const res = await fetch(`${API_URL}/api/me`, {
           method: 'GET',
           credentials: 'include', // envoie les cookies httpOnly
         });
@@ -67,7 +68,7 @@ export default function AuthPage() {
         ? { email, password, user_metadata: { first_name: firstName, last_name: lastName, username } }
         : { email, password };
 
-      const res = await fetch(`http://localhost:3001/api/auth/${endpoint}`, {
+      const res = await fetch(`${API_URL}/api/auth/${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../config";
 
 export default function CheckoutPage() {
   const [panier, setPanier] = useState([]);
@@ -54,7 +55,7 @@ export default function CheckoutPage() {
     };
 
     try {
-      const response = await fetch("http://localhost:3001/api/orders", {
+      const response = await fetch(`${API_URL}/api/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(commande)
