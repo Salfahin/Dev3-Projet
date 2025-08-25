@@ -1,0 +1,7 @@
+services:
+  projet_dev_3_api:
+    build: ./Backend/
+    container_name: projet_dev_3_api
+    ports:
+      - "9000:3001"
+    #restart: always
