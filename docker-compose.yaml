@@ -1,0 +1,14 @@
+services:
+  projet_dev_3_api:
+    build: ./Backend/
+    container_name: projet_dev_3_api
+    ports:
+      - "3001:3001"
+    #restart: always
+
+  projet_dev_3_frontend:
+    build: ./Frontend
+    container_name: projet_dev_3_frontend
+    ports:
+      - "8080:80"
+    #restart:always

@@ -17,12 +17,14 @@ async function FetchParts(partType) {
       part_name,
       part_manufacturer,
       part_price,
+      approved,
       parts_specifications (
         part_specification,
         part_specification_value
       )
     `)
-        .eq('part_type', partType);
+        .eq('part_type', partType)
+        .eq('approved', true);
     if (error) {
         console.error('Supabase fetch error:', error);
         throw error;

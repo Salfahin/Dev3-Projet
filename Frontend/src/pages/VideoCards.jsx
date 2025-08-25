@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import PartGrid from '../components/parts_pages/PartGrid';
 import { BsGpuCard } from "react-icons/bs";
 
+import { API_URL } from "../config";
+
 export default function VideoCardsPage() {
   const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/parts/video_cards')
+    fetch(`${API_URL}/api/parts/video_cards`)
       .then(res => res.json())
       .then(data => {
         setParts(data);

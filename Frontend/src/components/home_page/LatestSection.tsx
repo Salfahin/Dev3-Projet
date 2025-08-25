@@ -2,6 +2,7 @@
 It displays the five latest products of a category. */
 
 import { useEffect, useState } from 'react';
+import { API_URL } from '../../config';
 
 // The props of this componenent.
 interface LatestSectionProps {
@@ -22,7 +23,7 @@ export default function LatestSection({
   const [items, setItems] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/latest/${section}`)
+    fetch(`${API_URL}/api/latest/${section}`)
       .then((res) => res.json())
       .then((data) => setItems(data))
       .catch((err) => console.error(`Error fetching ${section}:`, err));
