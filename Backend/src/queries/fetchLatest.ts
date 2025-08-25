@@ -18,6 +18,7 @@ export async function FetchLatest(
         .select('*')
         .order('config_id', { ascending: false })
         .limit(5)
+        .eq('approved', true);
 
         if (error) {
             console.error(':(\nError fetching configurations:', error);
