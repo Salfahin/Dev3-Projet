@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { API_URL } from "../../config"
 
 export default function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true);
@@ -8,7 +9,7 @@ export default function ProtectedRoute({ children }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch('http://localhost:3001/api/me', {
+        const res = await fetch(`${API_URL}/api/me`, {
           method: 'GET',
           credentials: 'include', // envoie les cookies httpOnly
         });
