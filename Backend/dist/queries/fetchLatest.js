@@ -15,7 +15,8 @@ async function FetchLatest(partType) {
             .from('configurations')
             .select('*')
             .order('config_id', { ascending: false })
-            .limit(5);
+            .limit(5)
+            .eq('approved', true);
         if (error) {
             console.error(':(\nError fetching configurations:', error);
             return [];

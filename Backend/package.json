@@ -15,7 +15,6 @@
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
     "@supabase/supabase-js": "^2.56.0",
-    "@types/express": "^5.0.3",
     "@types/node": "^24.2.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -31,6 +30,10 @@
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.9",
-    "@types/cors": "^2.8.19"
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/express-serve-static-core": "^5.0.7",
+    "add": "^2.0.6",
+    "pnpm": "^10.15.0"
   }
 }
