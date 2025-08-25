@@ -9,7 +9,7 @@ export default function ConfigPartsForm({ configId, rows, handleChange, addRow, 
   useEffect(() => {
     const fetchPartTypes = async () => {
       try {
-        const res = await fetch("${API_URL}/api/part-types");
+        const res = await fetch(`${API_URL}/api/part-types`);
         const types = await res.json();
         setPartTypes(types);
       } catch (err) {
