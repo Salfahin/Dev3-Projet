@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { BsPcDisplay } from "react-icons/bs";
+import { API_URL } from "../config";
 
 export default function ConfigurationsPage() {
   const [configurations, setConfigurations] = useState([]);
@@ -12,7 +13,7 @@ export default function ConfigurationsPage() {
   const [specs, setSpecs] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/configurations')
+    fetch(`${API_URL}/api/configurations`)
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -62,7 +63,7 @@ export default function ConfigurationsPage() {
     const fetchSpecs = async () => {
       try {
         const encodedPartName = encodeURIComponent(selectedPart.part_name);
-        const res = await fetch(`http://localhost:3001/api/specs/${encodedPartName}`);
+        const res = await fetch(`${API_URL}/api/specs/${encodedPartName}`);
         if (!res.ok) {
           if (res.status === 404) {
             setSpecs([]);

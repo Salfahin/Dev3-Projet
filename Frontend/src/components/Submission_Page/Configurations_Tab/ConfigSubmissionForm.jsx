@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import ConfigForm from "./ConfigForm";
 import ConfigPartsForm from "./ConfigPartsForm";
+import { API_URL } from "../../../config";
 
 export default function ConfigSubmissionForm() {
   const [rows, setRows] = useState([{ type: "", part: "" }]);
@@ -26,7 +27,7 @@ export default function ConfigSubmissionForm() {
     };
 
     try {
-      const response = await fetch("http://localhost:3001/api/add-config", {
+      const response = await fetch(`${API_URL}/api/add-config`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(configData),
@@ -45,7 +46,7 @@ export default function ConfigSubmissionForm() {
   const handleSubmitConfigParts = async () => { // Gets called when ConfigPartsForm is submitted.
     try {
       const payload = { config_id: configId, parts: rows };
-      const response = await fetch("http://localhost:3001/api/add-configparts", {
+      const response = await fetch(`${API_URL}/api/add-configparts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

@@ -1,13 +1,14 @@
 'use client'
 import { useEffect, useState } from "react";
 import PartGrid from '../components/parts_pages/PartGrid';
+import { API_URL } from "../config";
 
 export default function OthersPage() {
   const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/parts/others')
+    fetch(`${API_URL}/api/parts/others`)
       .then(res => res.json())
       .then(data => {
         setParts(data);

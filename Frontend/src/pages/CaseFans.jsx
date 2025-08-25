@@ -2,13 +2,14 @@
 import { useEffect, useState } from "react";
 import PartGrid from '../components/parts_pages/PartGrid';
 import { BsFan } from "react-icons/bs";
+import { API_URL } from "../config";
 
 export default function CaseFansPage() {
   const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/parts/case_fans')
+    fetch(`${API_URL}/api/parts/case_fans`)
       .then(res => res.json())
       .then(data => {
         setParts(data);

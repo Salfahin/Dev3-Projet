@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import PartForm from "./PartForm";
 import PartSpecificationsForm from "./PartSpecificationsForm";
+import { API_URL } from "../../../config";
 
 export default function PartSubmissionForm() {
   const [rows, setRows] = useState([{ specification: "", value: "" }]);
@@ -30,7 +31,7 @@ export default function PartSubmissionForm() {
     };
 
     try {
-      const response = await fetch("http://localhost:3001/api/add-part", {
+      const response = await fetch(`${API_URL}/api/add-part`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(partData),
@@ -49,7 +50,7 @@ export default function PartSubmissionForm() {
   const handleSubmitSpecifications = async () => {
     try {
       const payload = { part_id: partId, specifications: rows };
-      const response = await fetch("http://localhost:3001/api/add-specifications", {
+      const response = await fetch(`${API_URL}/api/add-specifications`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

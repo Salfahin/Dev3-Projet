@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import PartGrid from '../components/parts_pages/PartGrid';
+import { API_URL } from "../config";
 
 function Processors() {
   const [processors, setProcessors] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/parts/processors')
+    fetch(`${API_URL}/api/parts/processors`)
       .then(res => res.json())
       .then(json => setProcessors(json));
   }, []);

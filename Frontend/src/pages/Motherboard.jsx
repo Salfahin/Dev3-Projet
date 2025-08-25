@@ -2,13 +2,14 @@
 import { useEffect, useState } from "react";
 import PartGrid from '../components/parts_pages/PartGrid';
 import { BsMotherboard } from "react-icons/bs";
+import { API_URL } from "../config";
 
 export default function MotherboardPage() {
   const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/parts/motherboards')
+    fetch(`${API_URL}/api/parts/motherboards`)
       .then(res => res.json())
       .then(data => {
         setParts(data);

@@ -2,13 +2,14 @@
 import { useEffect, useState } from "react";
 import PartGrid from '../components/parts_pages/PartGrid';
 import { BsHdd } from "react-icons/bs";
+import { API_URL } from "../config";
 
 export default function DisksPage() {
   const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/parts/disks')
+    fetch(`${API_URL}/api/parts/disks`)
       .then(res => res.json())
       .then(data => {
         setParts(data);

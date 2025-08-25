@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_URL } from "../../../config";
 
 export default function ConfigPartsForm({ configId, rows, handleChange, addRow, onSubmit }) {
   const [partTypes, setPartTypes] = useState([]);
@@ -8,7 +9,7 @@ export default function ConfigPartsForm({ configId, rows, handleChange, addRow, 
   useEffect(() => {
     const fetchPartTypes = async () => {
       try {
-        const res = await fetch("http://localhost:3001/api/part-types");
+        const res = await fetch("${API_URL}/api/part-types");
         const types = await res.json();
         setPartTypes(types);
       } catch (err) {
@@ -23,7 +24,7 @@ export default function ConfigPartsForm({ configId, rows, handleChange, addRow, 
     if (!type || partsByType[type]) return; // already fetched
 
     try {
-      const res = await fetch(`http://localhost:3001/api/parts-by-type/${type}`);
+      const res = await fetch(`${API_URL}/api/parts-by-type/${type}`);
       const data = await res.json();
       setPartsByType((prev) => ({ ...prev, [type]: data.parts || [] }));
     } catch (err) {
