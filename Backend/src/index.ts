@@ -250,42 +250,6 @@ app.post('/api/add-config', async (req: Request, res: Response) => {
   }
 });
 
-// ### Adds the parts of the configurations into "configurations_parts".
-
-app.post('/api/add-config-parts', async (req: Request, res: Response) => {
-  try {
-    const { config_id, parts } = req.body;
-
-    if (!config_id || !Array.isArray(parts) || parts.length === 0) {
-      return res.status(400).json({ error: 'Missing required fields or parts' });
-    }
-
-    const rowsToInsert = parts.map(part => ({
-      config_id,
-      part_value: part.value
-    }));
-
-    const { data, error } = await supabase
-      .from('configurations_parts')
-      .insert(rowsToInsert)
-      .select('*'); // returns inserted rows
-
-    if (error) {
-      console.error('Supabase insert error:', error);
-      return res.status(500).json({ error: 'Failed to insert configuration parts' });
-    }
-
-    res.status(201).json({
-      message: 'Configuration parts added successfully',
-      parts: data
-    });
-
-  } catch (err) {
-    console.error('Server error:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
 // #### First, the form uses these two points to make suggestions to the user.
 
 const partTypes = [ // We should ideally fetch this from the database at one point.
