@@ -1,0 +1,79 @@
+meta {
+  name: getPowerSupplies
+  type: http
+  seq: 10
+}
+
+get {
+  url: http://188.166.38.93:3001/api/parts/power_supplies
+  body: none
+  auth: inherit
+}
+
+tests {
+  // 1. Status code check
+  test("should return 200 OK", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  // 2. Response should be an array
+  test("response should be an array", function () {
+    const psus = res.getBody();
+    expect(psus).to.be.an("array");
+    expect(psus.length).to.be.greaterThan(0);
+  });
+  
+  // 3. Each PSU has required fields
+  test("each PSU should have id, type, name, manufacturer, price, specifications", function () {
+    const psus = res.getBody();
+    psus.forEach(p => {
+      expect(p).to.have.property("id");
+      expect(p).to.have.property("type");
+      expect(p).to.have.property("name");
+      expect(p).to.have.property("manufacturer");
+      expect(p).to.have.property("price");
+      expect(p).to.have.property("specifications");
+    });
+  });
+  
+  // 4. type should equal 3 for all PSUs
+  test("type should equal 3 for all PSUs", function () {
+    const psus = res.getBody();
+    psus.forEach(p => {
+      expect(p.type).to.equal(3);
+    });
+  });
+  
+  // 5. price should be >= 0
+  test("price should be >= 0", function () {
+    const psus = res.getBody();
+    psus.forEach(p => {
+      expect(p.price).to.be.a("number");
+      expect(p.price).to.be.greaterThanOrEqual(0);
+    });
+  });
+  
+  // 6. specifications should be an object
+  test("specifications should be an object with connector and wattage info", function () {
+    const psus = res.getBody();
+    psus.forEach(p => {
+      expect(p.specifications).to.be.an("object");
+      expect(p.specifications).to.have.property("Wattage");
+      expect(p.specifications).to.have.property("Modular");
+    });
+  });
+  
+  // 7. Optional: verify that all PSUs have a valid Efficiency Rating
+  test("each PSU should have an Efficiency Rating", function () {
+    const psus = res.getBody();
+    psus.forEach(p => {
+      expect(p.specifications).to.have.property("Efficiency Rating");
+      expect(["80+ Gold", "80+ Platinum", "80+ Bronze"].includes(p.specifications["Efficiency Rating"])).to.equal(true);
+    });
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}

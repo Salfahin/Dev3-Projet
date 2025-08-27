@@ -1,0 +1,60 @@
+meta {
+  name: getLatestConfigs
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://188.166.38.93:3001/api/latest/configurations
+  body: none
+  auth: inherit
+}
+
+tests {
+  // 1. Status Code Check
+  test("should return 200 OK", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  // 2. Response is an Array
+  test("response should be an array", function () {
+    const body = res.getBody();
+    expect(body).to.be.an("array");
+    expect(body.length).to.be.greaterThan(0);
+  });
+  
+  // 3. Each config has required fields
+  test("each config should have id, name, author, price, source, approved", function () {
+    const configs = res.getBody();
+    configs.forEach(cfg => {
+      expect(cfg).to.have.property("config_id");
+      expect(cfg).to.have.property("config_name");
+      expect(cfg).to.have.property("config_price");
+      expect(cfg).to.have.property("config_author");
+      expect(cfg).to.have.property("original_source");
+      expect(cfg).to.have.property("approved");
+    });
+  });
+  
+  // 4. config_id should always be a positive number
+  test("config_id should be positive numbers", function () {
+    const configs = res.getBody();
+    configs.forEach(cfg => {
+      expect(cfg.config_id).to.be.a("number");
+      expect(cfg.config_id).to.be.greaterThan(0);
+    });
+  });
+  
+  // 5. approved should always be boolean
+  test("approved should be boolean", function () {
+    const configs = res.getBody();
+    configs.forEach(cfg => {
+      expect(cfg.approved === true || cfg.approved === false).to.equal(true);
+    });
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}

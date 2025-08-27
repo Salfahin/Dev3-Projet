@@ -1,0 +1,19 @@
+meta {
+  name: getPartsSpecifications
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://188.166.38.93:3001/api/specs/:partName
+  body: none
+  auth: inherit
+}
+
+params:path {
+  partName: 
+}
+
+settings {
+  encodeUrl: true
+}

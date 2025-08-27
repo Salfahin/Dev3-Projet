@@ -1,0 +1,80 @@
+meta {
+  name: getLatestPowerSupplies
+  type: http
+  seq: 10
+}
+
+get {
+  url: http://188.166.38.93:3001/api/latest/power-supplies
+  body: none
+  auth: inherit
+}
+
+tests {
+  // 1. Status Code Check
+  test("should return 200 OK", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  // 2. Response is an Array
+  test("response should be an array", function () {
+    const body = res.getBody();
+    expect(body).to.be.an("array");
+    expect(body.length).to.be.greaterThan(0);
+    expect(body.length).to.be.lessThanOrEqual(5); // Latest 5 entries
+  });
+  
+  // 3. Each PSU has required fields
+  test("each PSU should have id, type, name, manufacturer, price, approved", function () {
+    const parts = res.getBody();
+    parts.forEach(p => {
+      expect(p).to.have.property("part_id");
+      expect(p).to.have.property("part_type");
+      expect(p).to.have.property("part_name");
+      expect(p).to.have.property("part_manufacturer");
+      expect(p).to.have.property("part_price");
+      expect(p).to.have.property("approved");
+    });
+  });
+  
+  // 4. part_id should be positive numbers
+  test("part_id should be positive numbers", function () {
+    const parts = res.getBody();
+    parts.forEach(p => {
+      expect(p.part_id).to.be.a("number");
+      expect(p.part_id).to.be.greaterThan(0);
+    });
+  });
+  
+  // 5. part_type should equal 3 (PSU)
+  test("part_type should equal 3 for all PSUs", function () {
+    const parts = res.getBody();
+    parts.forEach(p => {
+      expect(p.part_type).to.equal(3);
+    });
+  });
+  
+  // 6. part_price should be null or a non-negative number
+  test("part_price should be null or >= 0", function () {
+    const parts = res.getBody();
+    parts.forEach(p => {
+      if (p.part_price !== null) {
+        expect(p.part_price).to.be.a("number");
+        expect(p.part_price).to.be.greaterThanOrEqual(0);
+      }
+    });
+  });
+  
+  // 7. approved should be boolean
+  test("approved should be boolean", function () {
+    const parts = res.getBody();
+    parts.forEach(p => {
+      expect(p.approved === true || p.approved === false).to.equal(true);
+    });
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}

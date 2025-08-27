@@ -1,0 +1,80 @@
+meta {
+  name: getConfigurations
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://188.166.38.93:3001/api/configurations
+  body: none
+  auth: inherit
+}
+
+tests {
+  // 1. Status Code Check
+  test("should return 200 OK", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  // 2. Response is an Array
+  test("response should be an array", function () {
+    const body = res.getBody();
+    expect(body).to.be.an("array");
+    expect(body.length).to.be.greaterThan(0);
+  });
+  
+  // 3. Each configuration has required fields
+  test("each configuration should have id, name, author, price, parts", function () {
+    const configs = res.getBody();
+    configs.forEach(c => {
+      expect(c).to.have.property("id");
+      expect(c).to.have.property("name");
+      expect(c).to.have.property("author");
+      expect(c).to.have.property("price");
+      expect(c).to.have.property("parts");
+    });
+  });
+  
+  // 4. id should be positive numbers
+  test("id should be positive numbers", function () {
+    const configs = res.getBody();
+    configs.forEach(c => {
+      expect(c.id).to.be.a("number");
+      expect(c.id).to.be.greaterThan(0);
+    });
+  });
+  
+  // 5. parts should be an object
+  test("parts should be an object containing components", function () {
+    const configs = res.getBody();
+    configs.forEach(c => {
+      expect(c.parts).to.be.an("object");
+    });
+  });
+  
+  // 6. each part in parts should be a string or null
+  test("each part in parts should be a string or null", function () {
+    const configs = res.getBody();
+    configs.forEach(c => {
+      Object.values(c.parts).forEach(v => {
+        expect(v === null || typeof v === "string").to.equal(true);
+      });
+    });
+  });
+  
+  // 7. price should be null or non-negative number
+  test("price should be null or >= 0", function () {
+    const configs = res.getBody();
+    configs.forEach(c => {
+      if (c.price !== null) {
+        expect(c.price).to.be.a("number");
+        expect(c.price).to.be.greaterThanOrEqual(0);
+      }
+    });
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}
