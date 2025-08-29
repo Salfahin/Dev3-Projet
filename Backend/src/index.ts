@@ -34,6 +34,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/images', express.static('Images')); // Images delivery
+
 // Requests
 
 // # HOME PAGE ROUTES
@@ -104,11 +106,20 @@ const partCategories: PartCategory[] = [
   { route: 'others', index: 9, name: 'others' },
 ];
 
+const API_URL = `localhost`
+
 partCategories.forEach(({ route, index, name }) => {
   app.get(`/api/parts/${route}`, async (req: Request, res: Response) => {
     try {
       const parts: Part[] = await FetchParts(index);
-      res.json(parts);
+
+      const partsWithImages = parts.map(part => ({
+        ...part,
+        image_url: `${API_URL}/images/${route}/${part.name.replace(/\s+/g, '_').toLowerCase()}.jpg`
+
+      }));
+
+      res.json(partsWithImages);
     } catch (error) {
       console.error(`Failed to fetch ${name}:`, error);
       res.status(500).json({ error: 'Internal server error' });
