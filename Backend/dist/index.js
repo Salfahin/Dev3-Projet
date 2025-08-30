@@ -6,18 +6,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
+const supabaseClient_1 = require("./lib/supabaseClient");
 const express_1 = __importDefault(require("express"));
 const fetchParts_1 = require("./queries/fetchParts");
 const fetchConfigs_1 = require("./queries/fetchConfigs");
 const fetchLatest_1 = require("./queries/fetchLatest");
 const FetchSpecs_1 = require("./queries/FetchSpecs");
-const supabaseClient_1 = require("./lib/supabaseClient");
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const crypto_1 = __importDefault(require("crypto"));
+const orders_1 = require("./queries/orders");
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3001;
 const cors = require('cors');
-app.use(cors());
-// Middleware to parse JSON
 app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
+app.use((0, cookie_parser_1.default)());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true //cookies HTTP-only
+}));
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-csrf-token');
+    next();
+});
 const categories = [
     { route: 'configurations', index: undefined, name: 'products' },
     { route: 'processors', index: 0, name: 'processors' },
@@ -261,6 +274,118 @@ app.post('/api/add-configparts', async (req, res) => {
     }
     catch (err) {
         console.error('Server error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+//orders 
+app.post("/api/orders", orders_1.creerCommande);
+// Gestion User + Cookie
+// Noms des cookies
+const ACCESS_COOKIE = 'sb-access-token';
+const REFRESH_COOKIE = 'sb-refresh-token';
+const CSRF_COOKIE = 'csrf-token';
+// Options cookies sécurisées
+const baseCookie = {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'lax',
+    path: '/',
+};
+// Pose les cookies d’auth
+function setAuthCookies(res, session) {
+    res.cookie(ACCESS_COOKIE, session.access_token, {
+        httpOnly: true,
+        secure: false, // localhost
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 1000, // 1h
+    });
+    res.cookie(REFRESH_COOKIE, session.refresh_token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30j
+    });
+}
+// Clear auth cookies
+function clearAuthCookies(res) {
+    res.clearCookie(ACCESS_COOKIE, { path: '/' });
+    res.clearCookie(REFRESH_COOKIE, { path: '/' });
+}
+// Rafraîchit si besoin et retourne l’utilisateur
+async function refreshIfNeeded(req, res) {
+    const access = req.cookies?.[ACCESS_COOKIE];
+    const refresh = req.cookies?.[REFRESH_COOKIE];
+    if (access) {
+        const { data } = await supabaseClient_1.supabase.auth.getUser(access);
+        if (data?.user)
+            return { user: data.user, accessToken: access };
+    }
+    if (!refresh)
+        return { user: null, accessToken: null };
+    const { data: refreshed, error } = await supabaseClient_1.supabase.auth.refreshSession({ refresh_token: refresh });
+    if (error || !refreshed?.session)
+        return { user: null, accessToken: null };
+    setAuthCookies(res, refreshed.session);
+    const { data: userData } = await supabaseClient_1.supabase.auth.getUser(refreshed.session.access_token);
+    return { user: userData?.user ?? null, accessToken: refreshed.session.access_token };
+}
+// CSRF endpoint
+app.get('/api/auth/csrf', (req, res) => {
+    if (!req.cookies?.[CSRF_COOKIE]) {
+        const token = crypto_1.default.randomBytes(24).toString('hex');
+        res.cookie(CSRF_COOKIE, token, {
+            httpOnly: false, // lisible côté frontend
+            secure: false, // localhost
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+        });
+    }
+    res.status(204).end();
+});
+// CSRF guard
+function csrfGuard(req, res, next) {
+    if (['GET', 'HEAD', 'OPTIONS'].includes(req.method))
+        return next();
+    const cookieToken = req.cookies?.[CSRF_COOKIE];
+    const headerToken = req.get('x-csrf-token');
+    if (!cookieToken || cookieToken !== headerToken) {
+        return res.status(403).json({ error: 'Bad CSRF token' });
+    }
+    next();
+}
+// LOGIN
+app.post('/api/auth/login', csrfGuard, async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password)
+            return res.status(400).json({ error: 'Missing email or password' });
+        const { data, error } = await supabaseClient_1.supabase.auth.signInWithPassword({ email, password });
+        if (error || !data.session)
+            return res.status(401).json({ error: error?.message || 'Authentication failed' });
+        setAuthCookies(res, data.session);
+        res.json({ message: 'Login successful', user: data.session.user });
+    }
+    catch (err) {
+        console.error('Login error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+app.post('/api/auth/logout', csrfGuard, (req, res) => {
+    clearAuthCookies(res);
+    res.status(204).end();
+});
+app.get('/api/me', async (req, res) => {
+    try {
+        const { user } = await refreshIfNeeded(req, res);
+        if (!user)
+            return res.status(401).json({ error: 'Not authenticated' });
+        res.json({ user });
+    }
+    catch (err) {
+        console.error('Error in /me:', err);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

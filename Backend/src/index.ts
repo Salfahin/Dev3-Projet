@@ -24,17 +24,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({
-  origin: 'http://localhost:3000' ,
+  origin: 'http://188.166.38.93:8080' ,
   credentials: true //cookies HTTP-only
 }));
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', 'http://188.166.38.93:8080');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-csrf-token');
   next();
 });
-
-app.use('/images', express.static('Images')); // Images delivery
 
 // Requests
 
@@ -106,20 +104,11 @@ const partCategories: PartCategory[] = [
   { route: 'others', index: 9, name: 'others' },
 ];
 
-const API_URL = `localhost`
-
 partCategories.forEach(({ route, index, name }) => {
   app.get(`/api/parts/${route}`, async (req: Request, res: Response) => {
     try {
       const parts: Part[] = await FetchParts(index);
-
-      const partsWithImages = parts.map(part => ({
-        ...part,
-        image_url: `${API_URL}/images/${route}/${part.name.replace(/\s+/g, '_').toLowerCase()}.jpg`
-
-      }));
-
-      res.json(partsWithImages);
+      res.json(parts);
     } catch (error) {
       console.error(`Failed to fetch ${name}:`, error);
       res.status(500).json({ error: 'Internal server error' });
@@ -260,8 +249,6 @@ app.post('/api/add-config', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
-// ### Adds the parts of the configurations into "configurations_parts".
 
 // #### First, the form uses these two points to make suggestions to the user.
 

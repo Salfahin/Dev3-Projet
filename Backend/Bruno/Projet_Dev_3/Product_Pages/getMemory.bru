@@ -1,0 +1,82 @@
+meta {
+  name: getMemory
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://188.166.38.93:3001/api/parts/memory
+  body: none
+  auth: inherit
+}
+
+tests {
+  // 1. Status Code Check
+  test("should return 200 OK", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  // 2. Response is an Array
+  test("response should be an array", function () {
+    const body = res.getBody();
+    expect(body).to.be.an("array");
+    expect(body.length).to.be.greaterThan(0);
+  });
+  
+  // 3. Each RAM module has required fields
+  test("each RAM should have id, type, name, manufacturer, price, specifications", function () {
+    const rams = res.getBody();
+    rams.forEach(r => {
+      expect(r).to.have.property("id");
+      expect(r).to.have.property("type");
+      expect(r).to.have.property("name");
+      expect(r).to.have.property("manufacturer");
+      expect(r).to.have.property("price");
+      expect(r).to.have.property("specifications");
+    });
+  });
+  
+  // 4. id should be positive numbers
+  test("id should be positive numbers", function () {
+    const rams = res.getBody();
+    rams.forEach(r => {
+      expect(r.id).to.be.a("number");
+      expect(r.id).to.be.greaterThan(0);
+    });
+  });
+  
+  // 5. type should equal 5 for all RAM modules
+  test("type should equal 5 for all RAM modules", function () {
+    const rams = res.getBody();
+    rams.forEach(r => {
+      expect(r.type).to.equal(5);
+    });
+  });
+  
+  // 6. price should be null or non-negative
+  test("price should be null or >= 0", function () {
+    const rams = res.getBody();
+    rams.forEach(r => {
+      if (r.price !== null) {
+        expect(r.price).to.be.a("number");
+        expect(r.price).to.be.greaterThanOrEqual(0);
+      }
+    });
+  });
+  
+  // 7. specifications should be an object with string values
+  test("specifications should be an object with string values", function () {
+    const rams = res.getBody();
+    rams.forEach(r => {
+      expect(r.specifications).to.be.an("object");
+      Object.values(r.specifications).forEach(v => {
+        expect(v === null || typeof v === "string").to.equal(true);
+      });
+    });
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}

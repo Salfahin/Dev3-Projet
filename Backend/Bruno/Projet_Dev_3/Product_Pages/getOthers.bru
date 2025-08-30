@@ -1,0 +1,68 @@
+meta {
+  name: getOthers
+  type: http
+  seq: 11
+}
+
+get {
+  url: http://188.166.38.93:3001/api/parts/others
+  body: none
+  auth: inherit
+}
+
+tests {
+  // 1. Status code check
+  test("should return 200 OK", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  // 2. Response should be an array
+  test("response should be an array", function () {
+    const accessories = res.getBody();
+    expect(accessories).to.be.an("array");
+    expect(accessories.length).to.be.greaterThan(0);
+  });
+  
+  // 3. Each accessory has required fields
+  test("each accessory should have id, type, name, manufacturer, price, specifications", function () {
+    const accessories = res.getBody();
+    accessories.forEach(a => {
+      expect(a).to.have.property("id");
+      expect(a).to.have.property("type");
+      expect(a).to.have.property("name");
+      expect(a).to.have.property("manufacturer");
+      expect(a).to.have.property("price");
+      expect(a).to.have.property("specifications");
+    });
+  });
+  
+  // 4. type should equal 9 for all accessories
+  test("type should equal 9 for all accessories", function () {
+    const accessories = res.getBody();
+    accessories.forEach(a => {
+      expect(a.type).to.equal(9);
+    });
+  });
+  
+  // 5. price should be >= 0
+  test("price should be >= 0", function () {
+    const accessories = res.getBody();
+    accessories.forEach(a => {
+      expect(a.price).to.be.a("number");
+      expect(a.price).to.be.greaterThanOrEqual(0);
+    });
+  });
+  
+  // 6. specifications should be an object (may be empty)
+  test("specifications should be an object", function () {
+    const accessories = res.getBody();
+    accessories.forEach(a => {
+      expect(a.specifications).to.be.an("object");
+    });
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}
