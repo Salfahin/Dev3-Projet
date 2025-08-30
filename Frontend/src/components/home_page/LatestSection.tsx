@@ -10,7 +10,7 @@ interface LatestSectionProps {
   icon: React.ReactNode;
   section: string;
   seeMoreLink: string;
-  uniqueIdentifier?: string; // Defauls to part_id if not provided (see line 21).
+  uniqueIdentifier?: string; // Defaults to part_id if not provided.
 }
 
 export default function LatestSection({
@@ -21,6 +21,16 @@ export default function LatestSection({
   uniqueIdentifier = 'part_id',
 }: LatestSectionProps) {
   const [items, setItems] = useState<any[]>([]);
+
+  // Inline fallback SVG (base64 encoded)
+  const fallback =
+    "data:image/svg+xml;base64," +
+    btoa(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150">' +
+        '<rect width="100%" height="100%" fill="#f3f4f6"/>' +
+        '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-size="14">No image</text>' +
+      '</svg>'
+    );
 
   useEffect(() => {
     fetch(`${API_URL}/api/latest/${section}`)
@@ -37,7 +47,10 @@ export default function LatestSection({
             {icon}
             {title}
           </h1>
-          <a href={seeMoreLink} className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
+          <a
+            href={seeMoreLink}
+            className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap"
+          >
             See more »
           </a>
         </div>
@@ -57,8 +70,7 @@ export default function LatestSection({
         </div>
       </div>
     );
-  }
-  else {
+  } else {
     return (
       <div>
         <div className="flex items-center justify-between mb-2">
@@ -66,23 +78,44 @@ export default function LatestSection({
             {icon}
             {title}
           </h1>
-          <a href={seeMoreLink} className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap">
+          <a
+            href={seeMoreLink}
+            className="text-blue-600 hover:underline text-sm font-medium whitespace-nowrap"
+          >
             See more »
           </a>
         </div>
         <hr className="my-2" />
         <div className="flex gap-4">
-          {items.map((item) => (
-            <div
-              key={item[uniqueIdentifier]}
-              className="flex-1 p-4 border rounded shadow-sm bg-white"
-            >
-              <h2 className="font-semibold">{item.part_name}</h2>
-              {item.part_manufacturer && (
-                <p className="text-sm text-gray-500">{item.part_manufacturer}</p>
-              )}
-            </div>
-          ))}
+          {items.map((item) => {
+            const imageUrl = `${API_URL}/images/Parts/${item.part_type}/${item.part_id}.jpg`;
+
+            return (
+              <div
+                key={item[uniqueIdentifier]}
+                className="flex-1 p-4 border rounded shadow-sm bg-white"
+              >
+                {/* Image with fallback */}
+                <img
+                  src={imageUrl}
+                  alt={item.part_name}
+                  className="w-full h-40 object-contain mb-2"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    if (target.src !== fallback) {
+                      target.src = fallback;
+                    }
+                  }}
+                />
+
+                {/* Title and Manufacturer */}
+                <h2 className="font-semibold">{item.part_name}</h2>
+                {item.part_manufacturer && (
+                  <p className="text-sm text-gray-500">{item.part_manufacturer}</p>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     );

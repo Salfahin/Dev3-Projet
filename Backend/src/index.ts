@@ -34,6 +34,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/images', express.static('Images')); // To serve the images
+
 // Requests
 
 // # HOME PAGE ROUTES
